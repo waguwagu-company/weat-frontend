@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div></div>;
+  return <main className="w-full max-w-mobile min-h-full"></main>;
 }
