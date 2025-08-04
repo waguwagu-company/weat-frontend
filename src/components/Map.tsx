@@ -1,33 +1,39 @@
 'use client';
 
-import { LoadScriptNext, GoogleMap, Marker } from '@react-google-maps/api';
 import { useRef, useState, useEffect } from 'react';
+import { LoadScriptNext, GoogleMap, Marker } from '@react-google-maps/api';
 
-const mapContainerStyle = {
+import type { CSSProperties } from 'react';
+import type { GoogleMapProps } from '@react-google-maps/api';
+
+type MapPosition = Pick<GoogleMapProps, 'center'>['center'];
+type MapOptions = Pick<GoogleMapProps, 'options'>['options'];
+type Map = Pick<GoogleMap, 'state'>['state']['map'];
+
+const mapContainerStyle: CSSProperties = {
   width: '100%',
   height: '100vh',
 };
 
-const defaultPosition: google.maps.LatLngLiteral = {
+const defaultPosition: MapPosition = {
   lat: 37.564,
   lng: 127.002,
 };
 
-const defaultZoom = 15;
+const defaultZoom: number = 15;
 
-const mapOptions: google.maps.MapOptions = {
+const mapOptions: MapOptions = {
   streetViewControl: false,
   fullscreenControl: false,
   mapTypeControl: false,
 };
 
 export default function Map() {
-  const mapRef = useRef<google.maps.Map | null>(null);
+  const mapRef = useRef<Map>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentPosition, setCurrentPosition] =
-    useState<google.maps.LatLngLiteral>(defaultPosition);
+  const [currentPosition, setCurrentPosition] = useState<MapPosition>(defaultPosition);
 
-  const onMapLoad = (map: google.maps.Map) => {
+  const onMapLoad = (map: Map) => {
     mapRef.current = map;
     setIsLoaded(true);
   };
