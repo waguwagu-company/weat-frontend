@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Home() {
-  redirect('/create');
+  return <Link href="/create">시작하기</Link>;
 }

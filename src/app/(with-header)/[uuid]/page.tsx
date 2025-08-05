@@ -2,8 +2,8 @@
 
 import { useParams } from 'next/navigation';
 
-export default function Meeting() {
+export default function MeetingPage() {
   const params = useParams<{ uuid: string }>();
 
-  return <main>{params.uuid}</main>;
+  return <section>{params.uuid}</section>;
 }

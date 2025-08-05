@@ -30,7 +30,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className="w-full max-w-[400px] min-h-screen mx-auto bg-white shadow-md">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
