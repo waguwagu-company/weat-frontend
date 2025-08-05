@@ -8,7 +8,7 @@ import type { GoogleMapProps } from '@react-google-maps/api';
 
 type MapPosition = Pick<GoogleMapProps, 'center'>['center'];
 type MapOptions = Pick<GoogleMapProps, 'options'>['options'];
-type Map = Pick<GoogleMap, 'state'>['state']['map'];
+type MapState = Pick<GoogleMap, 'state'>['state']['map'];
 
 const mapContainerStyle: CSSProperties = {
   width: '100%',
@@ -29,11 +29,11 @@ const mapOptions: MapOptions = {
 };
 
 export default function Map() {
-  const mapRef = useRef<Map>(null);
+  const mapRef = useRef<MapState>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentPosition, setCurrentPosition] = useState<MapPosition>(defaultPosition);
 
-  const onMapLoad = (map: Map) => {
+  const onMapLoad = (map: MapState) => {
     mapRef.current = map;
     setIsLoaded(true);
   };
