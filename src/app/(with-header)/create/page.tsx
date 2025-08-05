@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { GradientButton } from '@/components/ui/button';
 
 export default function CreatePage() {
   const router = useRouter();
@@ -17,20 +18,12 @@ export default function CreatePage() {
 
   return (
     <section className="w-full h-full flex flex-col justify-center gap-4 p-6">
-      <button
-        type="button"
-        onClick={startGroup}
-        className="w-full h-1/2 bg-black text-white rounded-xl cursor-pointer"
-      >
+      <GradientButton className="w-full h-1/2" onClick={startGroup}>
         다같이
-      </button>
-      <button
-        type="button"
-        onClick={startSolo}
-        className="w-full h-1/3 bg-black text-white rounded-xl cursor-pointer"
-      >
+      </GradientButton>
+      <GradientButton className="w-full h-1/2" onClick={startSolo}>
         혼자
-      </button>
+      </GradientButton>
     </section>
   );
 }
