@@ -9,6 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        default: 'bg-background text-foreground rounded-md',
+        outline: 'border border-background bg-transparent text-background rounded-md',
         primary: 'relative z-0 bg-primary text-primary-foreground',
         secondary: 'relative z-0 bg-secondary text-secondary-foreground',
       },
@@ -20,7 +22,7 @@ const buttonVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'primary',
+      variant: 'default',
       size: 'default',
     },
   }

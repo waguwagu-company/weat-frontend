@@ -39,7 +39,12 @@ export default function MeetingPage() {
         </h3>
         <div className="w-full flex justify-center items-center gap-2">
           <p className="text-lg font-semibold">{getHeadcountText(headcount)}</p>
-          <button type="button" className="cursor-pointer" onClick={refreshHeadcount}>
+          <button
+            type="button"
+            className="cursor-pointer"
+            aria-label="새로고침"
+            onClick={refreshHeadcount}
+          >
             <RotateCw size={16} />
           </button>
         </div>
