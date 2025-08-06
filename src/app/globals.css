@@ -7,8 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-pretendard: var(--font-pretendard), ui-sans-serif, system-ui, sans-serif;
+  --font-paperlogy: var(--font-paperlogy), ui-sans-serif, system-ui, sans-serif;
+  --font-cafe24-pro-up: var(--font-cafe24-pro-up), ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -27,6 +28,8 @@
   --color-muted-dark: var(--muted-dark);
   --color-muted-medium: var(--muted-medium);
   --color-muted-light: var(--muted-light);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
@@ -49,11 +52,13 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: #0f0f0f;
   --primary-foreground: #ffffff;
+  --secondary: #ffffff;
+  --secondary-foreground: #000000;
   --muted-light: #d9d9d9;
   --muted-medium: #c2c2c2;
   --muted-dark: #6e6e6e;
-  --gradient-light: linear-gradient(233.15deg, #e36969 10%, #2a92d7 90%);
-  --gradient-dark: linear-gradient(233.15deg, #ff0000 10%, #0c5585 90%);
+  --gradient-light: linear-gradient(233.15deg, #e36969 0%, #2a92d7 100%);
+  --gradient-dark: linear-gradient(233.15deg, #ff0000 0%, #0c5585 100%);
   --good: #2859c4;
   --bad: #e94747;
   --border: oklch(0.92 0.004 286.32);
@@ -78,6 +83,8 @@
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.92 0.004 286.32);
   --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.552 0.016 285.938);
@@ -107,7 +114,6 @@ body {
   height: 100%;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
@@ -116,4 +122,25 @@ body {
 body {
   display: flex;
   justify-content: center;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: var(--color-gradient-light);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+}
+
+.text-gradient {
+  background: var(--color-gradient-dark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

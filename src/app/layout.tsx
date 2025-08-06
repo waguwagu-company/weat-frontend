@@ -1,19 +1,9 @@
 import { ReactNode } from 'react';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { pretendard, paperlogy, cafe24proup } from './fonts';
 
 import type { Metadata, Viewport } from 'next';
 
 import './globals.css';
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'WEAT',
@@ -30,7 +20,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${pretendard.variable} ${paperlogy.variable} ${cafe24proup.variable} font-pretendard antialiased`}
+      >
         <div className="w-full max-w-[400px] min-h-screen mx-auto bg-white shadow-md">
           {children}
         </div>
