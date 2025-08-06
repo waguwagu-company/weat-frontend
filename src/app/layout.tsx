@@ -23,7 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body
         className={`${pretendard.variable} ${paperlogy.variable} ${cafe24proup.variable} font-pretendard antialiased`}
       >
-        <div className="w-full max-w-[400px] min-h-screen mx-auto bg-white shadow-md">
+        <div className="w-full max-w-[400px] h-full min-h-screen mx-auto bg-white shadow-md">
           {children}
         </div>
       </body>
