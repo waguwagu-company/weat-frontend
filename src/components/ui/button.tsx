@@ -13,7 +13,7 @@ const buttonVariants = cva(
         outline: 'border-background bg-transparent text-background rounded-md',
         primary: 'border-foreground bg-primary text-background',
         secondary: 'border-muted-dark bg-background text-foreground',
-        gradient: 'relative z-0 border-gradient bg-muted-medium text-background',
+        gradient: 'border-none relative z-0 border-gradient bg-muted-medium text-background',
       },
       size: {
         default: 'h-fit p-4',
