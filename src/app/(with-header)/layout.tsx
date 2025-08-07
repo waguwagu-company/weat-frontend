@@ -23,7 +23,7 @@ export default function WithHeaderLayout({ children }: { children: ReactNode }) 
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
-        <h1 className="w-2/3 text-center font-semibold text-lg">헤더</h1>
+        <h1 className="w-2/3 text-center font-semibold text-xl">헤더</h1>
       </header>
       <main className="w-full h-[calc(100vh-52px)]">{children}</main>
     </>
