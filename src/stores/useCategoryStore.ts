@@ -101,8 +101,8 @@ const categoryData: Category[] = [
 
 interface CategoryState {
   categories: Category[];
-  setTagGood: (categoryTitle: string, tagLabel: string) => void;
-  setTagBad: (categoryTitle: string, tagLabel: string) => void;
+  setTagGood: (_categoryTitle: string, _tagLabel: string) => void;
+  setTagBad: (_categoryTitle: string, _tagLabel: string) => void;
   getGoodTagCount: () => number;
   getBadTagCount: () => number;
 }
