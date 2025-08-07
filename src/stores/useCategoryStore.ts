@@ -122,6 +122,7 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
             ...category,
             tags: category.tags.map((tag) => {
               if (tag.label !== tagLabel) return tag;
+              if (tag.status === TAG_STATUS.BAD) return tag;
 
               if (tag.status === TAG_STATUS.GOOD) {
                 return {
@@ -161,6 +162,7 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
             ...category,
             tags: category.tags.map((tag) => {
               if (tag.label !== tagLabel) return tag;
+              if (tag.status === TAG_STATUS.GOOD) return tag;
 
               if (tag.status === TAG_STATUS.BAD) {
                 return {

@@ -4,12 +4,12 @@ import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore } from '@/stores';
 import { Chip } from '@/components/ui/chip';
 import { Button } from '@/components/ui/button';
-import { TAG_STATUS, GOOD_MAX } from '@/constants/category';
+import { TAG_STATUS, BAD_MAX } from '@/constants/category';
 
 import type { Category } from '@/types/category';
 
 function CategoryBox({ title, tags }: Category) {
-  const { setTagGood } = useCategoryStore();
+  const { setTagBad } = useCategoryStore();
 
   return (
     <article>
@@ -19,8 +19,8 @@ function CategoryBox({ title, tags }: Category) {
           <li key={tag.label}>
             <Chip
               variant={tag.status}
-              disabled={tag.status === TAG_STATUS.BAD}
-              onClick={() => setTagGood(title, tag.label)}
+              disabled={tag.status === TAG_STATUS.GOOD}
+              onClick={() => setTagBad(title, tag.label)}
             >
               {tag.label}
             </Chip>
@@ -31,15 +31,15 @@ function CategoryBox({ title, tags }: Category) {
   );
 }
 
-export default function CategoryLikePage() {
+export default function CategoryDislikePage() {
   const router = useRouter();
   const params = useParams<{ uuid: string }>();
-  const { categories, getGoodTagCount } = useCategoryStore();
+  const { categories, getBadTagCount } = useCategoryStore();
 
-  const tagCount = getGoodTagCount();
+  const tagCount = getBadTagCount();
 
-  const saveLike = () => {
-    router.push(`/${params.uuid}/dislike`);
+  const saveDislike = () => {
+    router.push(`/${params.uuid}/prompt`);
   };
 
   return (
@@ -49,10 +49,10 @@ export default function CategoryLikePage() {
           <CategoryBox key={category.title} title={category.title} tags={category.tags} />
         ))}
       </section>
-      <Button variant="primary" className="mt-7" disabled={tagCount === 0} onClick={saveLike}>
+      <Button variant="primary" className="mt-7" disabled={tagCount === 0} onClick={saveDislike}>
         {tagCount === 0
-          ? `${GOOD_MAX}개까지 선택할 수 있어요. (${tagCount}/${GOOD_MAX})`
-          : `다 선택했어요. (${tagCount}/${GOOD_MAX})`}
+          ? `${BAD_MAX}개까지 선택할 수 있어요. (${tagCount}/${BAD_MAX})`
+          : `다 선택했어요. (${tagCount}/${BAD_MAX})`}
       </Button>
     </div>
   );
