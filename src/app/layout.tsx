@@ -6,8 +6,8 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'WEAT',
-  description: 'B-Side Potenday 508 WaguWagu Company',
+  title: '위잇 WEAT',
+  description: '혼자 그리고 함께, 빠르게 정하는 오늘의 메뉴',
 };
 
 export const viewport: Viewport = {
