@@ -80,8 +80,8 @@ export default function ResultPage() {
   }, [api]);
 
   return (
-    <section className="h-full flex flex-col justify-between">
-      <div className="py-2.5 flex flex-col justify-between items-center gap-5">
+    <section className="w-full h-full flex flex-col justify-between">
+      <div className="h-full py-2.5 flex flex-col justify-center items-center gap-5">
         <Carousel
           setApi={setApi}
           opts={{
@@ -106,7 +106,7 @@ export default function ResultPage() {
             ))}
           </CarouselContent>
         </Carousel>
-        <article className="w-full h-full flex flex-col justify-center items-center gap-3 px-5 py-3">
+        <article className="w-full max-h-full flex flex-col justify-start items-center gap-3 px-5 py-3">
           <h3 className="font-semibold text-gradient text-xl">
             {mockData[currentIndex].analysisBasisList[0].analysisBasisType}
           </h3>
