@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { pretendard, paperlogy, cafe24proup } from './fonts';
+import Providers from './providers';
 
 import type { Metadata, Viewport } from 'next';
 
@@ -23,9 +24,11 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body
         className={`${pretendard.variable} ${paperlogy.variable} ${cafe24proup.variable} font-pretendard antialiased`}
       >
-        <div className="w-full max-w-[400px] h-full min-h-screen mx-auto bg-white shadow-md">
-          {children}
-        </div>
+        <Providers>
+          <div className="w-full max-w-[400px] h-full min-h-screen mx-auto bg-white shadow-md">
+            {children}
+          </div>
+        </Providers>
       </body>
     </html>
   );
