@@ -1,11 +1,15 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 import type { ChangeEvent } from 'react';
 
 export default function PromptPage() {
+  const router = useRouter();
+  const params = useParams<{ uuid: string }>();
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState<string>('');
   const isEmpty = prompt.trim().length === 0;
@@ -46,12 +50,17 @@ export default function PromptPage() {
         ></textarea>
       </article>
       <div className="flex flex-col items-center gap-5 pb-7">
-        <Button variant={isEmpty ? 'gradient' : 'primary'} size="round">
+        <Button
+          variant={isEmpty ? 'gradient' : 'primary'}
+          size="round"
+          className={isEmpty ? 'pointer-events-none' : ''}
+        >
           {getButtonText()}
         </Button>
         <button
           type="button"
           className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
+          onClick={() => router.push(`/${params.uuid}/result`)}
         >
           입력하지 않고 넘어갈래요.
         </button>
