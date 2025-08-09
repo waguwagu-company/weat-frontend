@@ -36,10 +36,10 @@ export default function PlaceCard({
           >
             {placeName}
           </h2>
-          <button type="button" className="flex gap-1 cursor-pointer">
+          <span className="flex gap-1">
             <ThumbsUp size={20} strokeWidth={1} />
             <span className="font-semibold">{likeCount}</span>
-          </button>
+          </span>
         </div>
         <p
           title={placeAddress}
