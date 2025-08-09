@@ -1,6 +1,6 @@
 import { Image, ThumbsUp } from 'lucide-react';
 
-import type { PlaceResult } from '@/types/place';
+import type { PlaceResult } from '@/types/analysis';
 
 interface PlaceCardProps
   extends Pick<PlaceResult, 'placeName' | 'placeAddress' | 'placeImageList'> {

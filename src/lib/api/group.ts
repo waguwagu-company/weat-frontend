@@ -2,7 +2,7 @@ import axiosInstance from '@/lib/axiosInstance';
 
 import type { ApiResponse } from '@/types/api';
 import type { Group } from '@/types/group';
-import type { PlaceResult } from '@/types/place';
+import type { PlaceResult } from '@/types/analysis';
 
 type CreateGroupResponse = Omit<Group, 'isSingleMemberGroup'>;
 type JoinGroupResponse = Pick<Group, 'memberId'>;

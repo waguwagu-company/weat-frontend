@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useAnalysisStore } from '@/stores';
 import { Button } from '@/components/ui/button';
 
 import type { ChangeEvent } from 'react';
@@ -9,6 +10,7 @@ import type { ChangeEvent } from 'react';
 export default function PromptPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const { setFreewriting } = useAnalysisStore();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState<string>('');
@@ -25,6 +27,11 @@ export default function PromptPage() {
     const textarea = e.target;
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
+  const savePrompt = () => {
+    setFreewriting(prompt.trim());
+    router.push(`/${params.id}/loading`);
   };
 
   useEffect(() => {
@@ -54,13 +61,14 @@ export default function PromptPage() {
           variant={isEmpty ? 'gradient' : 'primary'}
           size="round"
           className={isEmpty ? 'pointer-events-none' : ''}
+          onClick={savePrompt}
         >
           {getButtonText()}
         </Button>
         <button
           type="button"
           className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
-          onClick={() => router.push(`/${params.id}/result`)}
+          onClick={() => router.push(`/${params.id}/loading`)}
         >
           입력하지 않고 넘어갈래요.
         </button>

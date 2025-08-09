@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import PlaceCard from '@/components/PlaceCard';
 
 import type { CarouselApi } from '@/components/ui/carousel';
-import type { PlaceResult } from '@/types/place';
+import type { PlaceResult } from '@/types/analysis';
 
 const mockData: PlaceResult[] = [
   {

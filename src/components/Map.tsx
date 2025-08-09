@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { LoadScriptNext, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { LoaderCircle } from 'lucide-react';
+import { useAnalysisStore } from '@/stores';
 import { Button } from '@/components/ui/button';
 import MapGPS from '@/assets/images/button-map-gps.svg';
 import { DEFAULT_POSITION } from '@/constants/location';
@@ -28,6 +29,7 @@ const mapOptions: MapOptions = {
 export default function Map() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const { setLocation } = useAnalysisStore();
 
   const mapRef = useRef<MapState>(null);
   const [currentPosition, setCurrentPosition] = useState<MapPosition>(DEFAULT_POSITION);
@@ -60,6 +62,7 @@ export default function Map() {
   };
 
   const savePosition = () => {
+    setLocation(markerPosition);
     router.push(`/${params.id}/like`);
   };
 

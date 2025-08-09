@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, useParams } from 'next/navigation';
-import { useCategoryStore } from '@/stores';
+import { useCategoryStore, useAnalysisStore } from '@/stores';
 import CategoryBox from '@/components/CategoryBox';
 import { Button } from '@/components/ui/button';
 import { TAG_STATUS, BAD_MAX } from '@/constants/category';
@@ -10,10 +10,12 @@ export default function CategoryDislikePage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { categories, setTagBad, getBadTagCount } = useCategoryStore();
+  const { setPreference } = useAnalysisStore();
 
   const tagCount = getBadTagCount();
 
   const saveDislike = () => {
+    setPreference(categories);
     router.push(`/${params.id}/prompt`);
   };
 
