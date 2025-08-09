@@ -1,4 +1,8 @@
+import { ANALYSIS_STATUS } from '@/constants/analysis';
+
 import type { Category, Tag } from '@/types/category';
+
+export type AnalysisStatus = (typeof ANALYSIS_STATUS)[keyof typeof ANALYSIS_STATUS];
 
 export type LocationSetting = {
   xPosition: number;

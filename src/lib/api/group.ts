@@ -9,9 +9,11 @@ type JoinGroupResponse = Pick<Group, 'memberId'>;
 type GroupResultsResponse = { groupResultDetailList: PlaceResult[] };
 
 export const createGroup = async (isSingleMemberGroup: boolean) => {
-  const response = await axiosInstance.post<ApiResponse<CreateGroupResponse>>(`/api/group`, {
-    isSingleMemberGroup,
-  });
+  const request = { isSingleMemberGroup };
+  const response = await axiosInstance.post<ApiResponse<CreateGroupResponse>>(
+    `/api/group`,
+    request
+  );
 
   return response.data;
 };
