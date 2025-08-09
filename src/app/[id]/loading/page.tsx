@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAnalysisStore } from '@/stores';
 import { useAnalysis, useAnalysisSettings, useAnalysisStatus } from '@/hooks/useAnalysis';
+import { useGetGroupResults } from '@/hooks/useGroup';
 import { ANALYSIS_STATUS } from '@/constants/analysis';
 
 const loadingText: string[] = [
@@ -19,6 +20,7 @@ export default function LoadingPage() {
   const params = useParams<{ id: string }>();
   const [textIndex, setTextIndex] = useState(0);
   const { memberId, locationSetting, categorySettingList, textInputSetting } = useAnalysisStore();
+
   const { mutate: submitSettings } = useAnalysisSettings();
   const { mutate: startAnalysis, isSuccess: isSuccessAnalysis } = useAnalysis();
   const {
@@ -26,6 +28,7 @@ export default function LoadingPage() {
     isSuccess: isSuccessStatus,
     refetch: refetchStatus,
   } = useAnalysisStatus(params.id);
+  const { mutate: getGroupResults } = useGetGroupResults();
 
   useEffect(() => {
     const textInterval = setInterval(() => {
@@ -54,7 +57,11 @@ export default function LoadingPage() {
 
   useEffect(() => {
     if (isSuccessStatus && analysisStatus.data.analysisStatus === ANALYSIS_STATUS.COMPLETED) {
-      router.push(`/${params.id}/result`);
+      getGroupResults(params.id, {
+        onSuccess: () => {
+          router.push(`/${params.id}/result`);
+        },
+      });
     }
   }, [isSuccessStatus, analysisStatus?.data?.analysisStatus]);
 
