@@ -1,21 +1,31 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useCreateGroup } from '@/hooks/useGroup';
 import { Button } from '@/components/ui/button';
 import IconGroup from '@/assets/images/icon-group.svg';
 import IconSolo from '@/assets/images/icon-solo.svg';
 
 export default function CreatePage() {
   const router = useRouter();
+  const { mutate, data: response, isSuccess } = useCreateGroup();
 
   const startGroup = () => {
-    const uuid = crypto.randomUUID();
-    router.push(`/${uuid}`);
+    mutate(false);
+
+    if (isSuccess) {
+      const groupId = response.data.groupId;
+      router.push(`/${groupId}`);
+    }
   };
 
   const startSolo = () => {
-    const uuid = crypto.randomUUID();
-    router.push(`/${uuid}/location`);
+    mutate(true);
+
+    if (isSuccess) {
+      const groupId = response.data.groupId;
+      router.push(`/${groupId}/location`);
+    }
   };
 
   return (

@@ -6,10 +6,8 @@ export const useCreateGroup = () => {
     mutationKey: ['createGroup'],
     mutationFn: createGroup,
     onSuccess: (data) => {
-      const groupId = data.data.groupId;
       const memberId = data.data.memberId;
 
-      localStorage.setItem('groupId', groupId);
       localStorage.setItem('memberId', memberId.toString());
 
       return data;

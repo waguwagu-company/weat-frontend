@@ -43,7 +43,7 @@ function Header() {
 
   const titleMap: Record<string, string> = {
     create: '인원을 선택해 주세요.',
-    '': '내가 원하는 조건을 알려주세요.', // /[uuid]
+    '': '내가 원하는 조건을 알려주세요.', // /[id]
     location: '위치를 선택해 주세요.',
     like: '좋아하는 음식을 알려주세요.',
     dislike: '싫어하는 음식을 알려주세요.',

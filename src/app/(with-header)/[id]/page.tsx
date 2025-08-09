@@ -10,7 +10,7 @@ const HEADCOUNT_MAX = 9;
 
 export default function MeetingPage() {
   const router = useRouter();
-  const params = useParams<{ uuid: string }>();
+  const params = useParams<{ id: string }>();
   const [headcount, setHeadcount] = useState<number>(HEADCOUNT_MIN);
 
   const getHeadcountText = (count: number) => {
@@ -26,7 +26,7 @@ export default function MeetingPage() {
   };
 
   const enterPreference = () => {
-    router.push(`/${params.uuid}/location`);
+    router.push(`/${params.id}/location`);
   };
 
   return (

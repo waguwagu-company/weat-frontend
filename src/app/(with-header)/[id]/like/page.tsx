@@ -9,13 +9,13 @@ import { TAG_STATUS, GOOD_MAX } from '@/constants/category';
 
 export default function CategoryLikePage() {
   const router = useRouter();
-  const params = useParams<{ uuid: string }>();
+  const params = useParams<{ id: string }>();
   const { categories, fetchCategories, setTagGood, getGoodTagCount } = useCategoryStore();
 
   const tagCount = getGoodTagCount();
 
   const saveLike = () => {
-    router.push(`/${params.uuid}/dislike`);
+    router.push(`/${params.id}/dislike`);
   };
 
   useEffect(() => {

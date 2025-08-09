@@ -8,7 +8,7 @@ import type { ChangeEvent } from 'react';
 
 export default function PromptPage() {
   const router = useRouter();
-  const params = useParams<{ uuid: string }>();
+  const params = useParams<{ id: string }>();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState<string>('');
@@ -60,7 +60,7 @@ export default function PromptPage() {
         <button
           type="button"
           className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
-          onClick={() => router.push(`/${params.uuid}/result`)}
+          onClick={() => router.push(`/${params.id}/result`)}
         >
           입력하지 않고 넘어갈래요.
         </button>

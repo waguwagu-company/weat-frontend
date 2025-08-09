@@ -35,7 +35,7 @@ const mapOptions: MapOptions = {
 
 export default function Map() {
   const router = useRouter();
-  const params = useParams<{ uuid: string }>();
+  const params = useParams<{ id: string }>();
 
   const mapRef = useRef<MapState>(null);
   const [currentPosition, setCurrentPosition] = useState<MapPosition>(defaultPosition);
@@ -68,7 +68,7 @@ export default function Map() {
   };
 
   const savePosition = () => {
-    router.push(`/${params.uuid}/like`);
+    router.push(`/${params.id}/like`);
   };
 
   useEffect(() => {

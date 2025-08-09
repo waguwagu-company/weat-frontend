@@ -8,13 +8,13 @@ import { TAG_STATUS, BAD_MAX } from '@/constants/category';
 
 export default function CategoryDislikePage() {
   const router = useRouter();
-  const params = useParams<{ uuid: string }>();
+  const params = useParams<{ id: string }>();
   const { categories, setTagBad, getBadTagCount } = useCategoryStore();
 
   const tagCount = getBadTagCount();
 
   const saveDislike = () => {
-    router.push(`/${params.uuid}/prompt`);
+    router.push(`/${params.id}/prompt`);
   };
 
   return (
