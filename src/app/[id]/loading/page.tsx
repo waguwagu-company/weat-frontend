@@ -1,7 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAnalysisStore } from '@/stores';
+import { useAnalysis, useAnalysisSettings, useAnalysisStatus } from '@/hooks/useAnalysis';
+import { ANALYSIS_STATUS } from '@/constants/analysis';
 
 const loadingText: string[] = [
   '당신의 위치를 반영 중이에요...',
@@ -11,14 +15,48 @@ const loadingText: string[] = [
 ];
 
 export default function LoadingPage() {
+  const router = useRouter();
+  const params = useParams<{ id: string }>();
   const [textIndex, setTextIndex] = useState(0);
+  const { memberId, locationSetting, categorySettingList, textInputSetting } = useAnalysisStore();
+  const { mutate: submitSettings } = useAnalysisSettings();
+  const { mutate: startAnalysis, isSuccess: isSuccessAnalysis } = useAnalysis();
+  const {
+    data: analysisStatus,
+    isSuccess: isSuccessStatus,
+    refetch: refetchStatus,
+  } = useAnalysisStatus(params.id);
 
   useEffect(() => {
     const textInterval = setInterval(() => {
       setTextIndex((prev) => (prev + 1) % loadingText.length);
     }, 6000);
+
+    submitSettings(
+      { memberId, locationSetting, categorySettingList, textInputSetting },
+      {
+        onSuccess: () => {
+          startAnalysis(params.id);
+        },
+      }
+    );
+
     return () => clearInterval(textInterval);
   }, []);
+
+  useEffect(() => {
+    const pollingInterval = setInterval(() => {
+      refetchStatus();
+    }, 5000);
+
+    return () => clearInterval(pollingInterval);
+  }, [isSuccessAnalysis]);
+
+  useEffect(() => {
+    if (isSuccessStatus && analysisStatus.data.analysisStatus === ANALYSIS_STATUS.COMPLETED) {
+      router.push(`/${params.id}/result`);
+    }
+  }, [isSuccessStatus, analysisStatus?.data?.analysisStatus]);
 
   return (
     <main className="w-full h-full flex justify-center items-center">
