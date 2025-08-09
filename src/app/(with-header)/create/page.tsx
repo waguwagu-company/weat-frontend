@@ -9,17 +9,19 @@ import IconSolo from '@/assets/images/icon-solo.svg';
 
 export default function CreatePage() {
   const router = useRouter();
-  const { mutate, data: response, isSuccess } = useCreateGroup();
+  const { mutate } = useCreateGroup();
   const { isSuccess: isSuccessCategories } = useCategories();
 
   const start = (isSolo: boolean) => {
-    mutate(isSolo);
-
-    if (isSuccess && isSuccessCategories) {
-      const groupId = response.data.groupId;
-      const path = isSolo ? `/${groupId}/location` : `/${groupId}`;
-      router.push(path);
-    }
+    mutate(isSolo, {
+      onSuccess: (response) => {
+        if (isSuccessCategories) {
+          const groupId = response.data.groupId;
+          const path = isSolo ? `/${groupId}/location` : `/${groupId}`;
+          router.push(path);
+        }
+      },
+    });
   };
 
   return (
