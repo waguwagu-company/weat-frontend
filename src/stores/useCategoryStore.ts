@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { getCategories } from '@/lib/api/category';
 import { TAG_STATUS, GOOD_MAX, BAD_MAX } from '@/constants/category';
 
 import type { Category } from '@/types/category';
@@ -7,7 +6,6 @@ import type { Category } from '@/types/category';
 interface CategoryState {
   categories: Category[];
   setCategories: (_categories: Category[]) => void;
-  fetchCategories: () => Promise<void>;
   setTagGood: (_categoryId: number, _tagId: number) => void;
   setTagBad: (_categoryId: number, _tagId: number) => void;
   getGoodTagCount: () => number;
@@ -17,10 +15,6 @@ interface CategoryState {
 export const useCategoryStore = create<CategoryState>((set, get) => ({
   categories: [],
   setCategories: (categories: Category[]) => set({ categories }),
-  fetchCategories: async () => {
-    const response = await getCategories();
-    set({ categories: response.categoryList });
-  },
 
   setTagGood: (categoryId, tagId) => {
     const goodCount = get().getGoodTagCount();

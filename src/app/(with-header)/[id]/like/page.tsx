@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore } from '@/stores';
 import CategoryBox from '@/components/category';
@@ -10,17 +9,13 @@ import { TAG_STATUS, GOOD_MAX } from '@/constants/category';
 export default function CategoryLikePage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const { categories, fetchCategories, setTagGood, getGoodTagCount } = useCategoryStore();
+  const { categories, setTagGood, getGoodTagCount } = useCategoryStore();
 
   const tagCount = getGoodTagCount();
 
   const saveLike = () => {
     router.push(`/${params.id}/dislike`);
   };
-
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
 
   return (
     <div className="h-full overflow-y-scroll px-5 py-7">
