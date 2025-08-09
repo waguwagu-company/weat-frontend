@@ -8,8 +8,8 @@ interface CategoryState {
   categories: Category[];
   setCategories: (_categories: Category[]) => void;
   fetchCategories: () => Promise<void>;
-  setTagGood: (_categoryTitle: string, _tagLabel: string) => void;
-  setTagBad: (_categoryTitle: string, _tagLabel: string) => void;
+  setTagGood: (_categoryId: number, _tagId: number) => void;
+  setTagBad: (_categoryId: number, _tagId: number) => void;
   getGoodTagCount: () => number;
   getBadTagCount: () => number;
 }
@@ -22,18 +22,18 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
     set({ categories: response.categoryList });
   },
 
-  setTagGood: (categoryTitle, tagLabel) => {
+  setTagGood: (categoryId, tagId) => {
     const goodCount = get().getGoodTagCount();
 
     set((state) => {
       return {
         categories: state.categories.map((category) => {
-          if (category.title !== categoryTitle) return category;
+          if (category.categoryId !== categoryId) return category;
 
           return {
             ...category,
             tags: category.tags.map((tag) => {
-              if (tag.label !== tagLabel) return tag;
+              if (tag.categoryTagId !== tagId) return tag;
               if (tag.status === TAG_STATUS.BAD) return tag;
 
               if (tag.status === TAG_STATUS.GOOD) {
@@ -62,18 +62,18 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
     }, 0);
   },
 
-  setTagBad: (categoryTitle, tagLabel) => {
+  setTagBad: (categoryId, tagId) => {
     const badCount = get().getBadTagCount();
 
     set((state) => {
       return {
         categories: state.categories.map((category) => {
-          if (category.title !== categoryTitle) return category;
+          if (category.categoryId !== categoryId) return category;
 
           return {
             ...category,
             tags: category.tags.map((tag) => {
-              if (tag.label !== tagLabel) return tag;
+              if (tag.categoryTagId !== tagId) return tag;
               if (tag.status === TAG_STATUS.GOOD) return tag;
 
               if (tag.status === TAG_STATUS.BAD) {

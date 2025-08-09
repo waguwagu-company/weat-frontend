@@ -2,39 +2,14 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore } from '@/stores';
-import { Chip } from '@/components/ui/chip';
+import CategoryBox from '@/components/category';
 import { Button } from '@/components/ui/button';
 import { TAG_STATUS, BAD_MAX } from '@/constants/category';
-
-import type { Category } from '@/types/category';
-
-function CategoryBox({ title, tags }: Category) {
-  const { setTagBad } = useCategoryStore();
-
-  return (
-    <article>
-      <h3 className="text-lg font-semibold pb-2">{title}</h3>
-      <ul className="flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <li key={tag.label}>
-            <Chip
-              variant={tag.status}
-              disabled={tag.status === TAG_STATUS.GOOD}
-              onClick={() => setTagBad(title, tag.label)}
-            >
-              {tag.label}
-            </Chip>
-          </li>
-        ))}
-      </ul>
-    </article>
-  );
-}
 
 export default function CategoryDislikePage() {
   const router = useRouter();
   const params = useParams<{ uuid: string }>();
-  const { categories, getBadTagCount } = useCategoryStore();
+  const { categories, setTagBad, getBadTagCount } = useCategoryStore();
 
   const tagCount = getBadTagCount();
 
@@ -46,7 +21,14 @@ export default function CategoryDislikePage() {
     <div className="h-full overflow-y-scroll px-5 py-7">
       <section className="flex flex-col gap-6">
         {categories.map((category) => (
-          <CategoryBox key={category.title} title={category.title} tags={category.tags} />
+          <CategoryBox
+            key={category.categoryId}
+            title={category.title}
+            categoryId={category.categoryId}
+            tags={category.tags}
+            status={TAG_STATUS.GOOD}
+            handlerClick={setTagBad}
+          />
         ))}
       </section>
       <Button variant="primary" className="mt-7" disabled={tagCount === 0} onClick={saveDislike}>

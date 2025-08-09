@@ -1,6 +1,6 @@
 import { TAG_STATUS } from '@/constants/category';
 
-interface Tag {
+export interface Tag {
   label: string;
   categoryTagId: number;
   categoryTagOrder: number;
