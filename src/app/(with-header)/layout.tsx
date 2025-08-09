@@ -1,15 +1,26 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Share2, ChevronLeft } from 'lucide-react';
 
 function ShareButton() {
+  const [href, setHref] = useState<string>('');
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(href);
+  };
+
+  useEffect(() => {
+    setHref(window.location.href);
+  }, []);
+
   return (
     <button
       type="button"
       className="absolute right-4 text-primary p-2 cursor-pointer"
       aria-label="공유하기"
+      onClick={copyLink}
     >
       <Share2 width={24} height={24} />
     </button>
