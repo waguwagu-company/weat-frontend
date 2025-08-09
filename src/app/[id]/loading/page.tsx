@@ -45,11 +45,11 @@ export default function LoadingPage() {
     );
 
     return () => clearInterval(textInterval);
-  }, []);
+  }, [params.id, memberId, locationSetting, categorySettingList, textInputSetting]);
 
   useEffect(() => {
     const pollingInterval = setInterval(() => {
-      refetchStatus();
+      if (isSuccessAnalysis) refetchStatus();
     }, 5000);
 
     return () => clearInterval(pollingInterval);
@@ -63,7 +63,7 @@ export default function LoadingPage() {
         },
       });
     }
-  }, [isSuccessStatus, analysisStatus?.data?.analysisStatus]);
+  }, [isSuccessStatus, analysisStatus?.data?.analysisStatus, params.id]);
 
   return (
     <main className="w-full h-full flex justify-center items-center">

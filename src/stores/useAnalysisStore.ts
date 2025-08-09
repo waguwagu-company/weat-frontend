@@ -18,7 +18,7 @@ const defaultLocationSetting: LocationSetting = {
   yPosition: DEFAULT_POSITION?.lng as number,
 };
 
-export const useAnalysisStore = create<AnalysisState>((set, get) => ({
+export const useAnalysisStore = create<AnalysisState>((set) => ({
   memberId: 0,
   locationSetting: defaultLocationSetting,
   categorySettingList: [],
