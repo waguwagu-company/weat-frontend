@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore } from '@/stores';
-import CategoryBox from '@/components/category';
+import CategoryBox from '@/components/CategoryBox';
 import { Button } from '@/components/ui/button';
 import { TAG_STATUS, BAD_MAX } from '@/constants/category';
 
