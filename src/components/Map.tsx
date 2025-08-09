@@ -6,22 +6,14 @@ import { LoadScriptNext, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MapGPS from '@/assets/images/button-map-gps.svg';
+import { DEFAULT_POSITION } from '@/constants/location';
 
 import type { CSSProperties } from 'react';
-import type { GoogleMapProps } from '@react-google-maps/api';
-
-type MapPosition = Pick<GoogleMapProps, 'center'>['center'];
-type MapOptions = Pick<GoogleMapProps, 'options'>['options'];
-type MapState = Pick<GoogleMap, 'state'>['state']['map'];
+import type { MapState, MapPosition, MapOptions } from '@/types/location';
 
 const mapContainerStyle: CSSProperties = {
   width: '100%',
   height: 'inherit',
-};
-
-const defaultPosition: MapPosition = {
-  lat: 37.564,
-  lng: 127.002,
 };
 
 const defaultZoom: number = 15;
@@ -38,8 +30,8 @@ export default function Map() {
   const params = useParams<{ id: string }>();
 
   const mapRef = useRef<MapState>(null);
-  const [currentPosition, setCurrentPosition] = useState<MapPosition>(defaultPosition);
-  const [markerPosition, setMarkerPosition] = useState<MapPosition>(defaultPosition);
+  const [currentPosition, setCurrentPosition] = useState<MapPosition>(DEFAULT_POSITION);
+  const [markerPosition, setMarkerPosition] = useState<MapPosition>(DEFAULT_POSITION);
 
   const onMapLoad = (map: MapState) => {
     mapRef.current = map;
@@ -49,7 +41,7 @@ export default function Map() {
     mapRef.current = null;
   };
 
-  const getCurrentLocation = () => {
+  const getCurrent = () => {
     if (!navigator.geolocation) return;
 
     navigator.geolocation.getCurrentPosition(
@@ -72,7 +64,7 @@ export default function Map() {
   };
 
   useEffect(() => {
-    getCurrentLocation();
+    getCurrent();
   }, []);
 
   return (
@@ -88,17 +80,17 @@ export default function Map() {
         <button
           type="button"
           className="absolute top-6 right-4 z-1 cursor-pointer"
-          onClick={getCurrentLocation}
+          onClick={getCurrent}
         >
           <MapGPS width="48" height="49" />
         </button>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          center={currentPosition || defaultPosition}
+          center={currentPosition || DEFAULT_POSITION}
           zoom={defaultZoom}
           options={mapOptions}
           onLoad={onMapLoad}
-          onClick={(e) => setMarkerPosition(e.latLng || defaultPosition)}
+          onClick={(e) => setMarkerPosition(e.latLng || DEFAULT_POSITION)}
           onUnmount={onMapUnmount}
         >
           {markerPosition && (
