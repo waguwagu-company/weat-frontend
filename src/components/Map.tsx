@@ -38,18 +38,15 @@ export default function Map() {
   const params = useParams<{ uuid: string }>();
 
   const mapRef = useRef<MapState>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [currentPosition, setCurrentPosition] = useState<MapPosition>(defaultPosition);
   const [markerPosition, setMarkerPosition] = useState<MapPosition>(defaultPosition);
 
   const onMapLoad = (map: MapState) => {
     mapRef.current = map;
-    setIsLoaded(true);
   };
 
   const onMapUnmount = () => {
     mapRef.current = null;
-    setIsLoaded(false);
   };
 
   const getCurrentLocation = () => {
@@ -79,9 +76,15 @@ export default function Map() {
   }, []);
 
   return (
-    <LoadScriptNext googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
+    <LoadScriptNext
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
+      loadingElement={
+        <div className="w-full h-full flex justify-center items-center">
+          <LoaderCircle size={30} className="animate-spin text-muted-medium cursor-progress" />
+        </div>
+      }
+    >
       <>
-        {!isLoaded && <LoaderCircle className="animate-spin text-muted-medium cursor-progress" />}
         <button
           type="button"
           className="absolute top-6 right-4 z-1 cursor-pointer"
