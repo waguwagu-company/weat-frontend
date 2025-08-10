@@ -11,6 +11,7 @@ interface AnalysisState extends AnalysisSettings {
   setLocation: (_position: MapPosition) => void;
   setPreference: (_categories: Category[]) => void;
   setFreewriting: (_prompt: string) => void;
+  getSettings: () => AnalysisSettings;
 }
 
 const defaultLocationSetting: LocationSetting = {
@@ -18,7 +19,7 @@ const defaultLocationSetting: LocationSetting = {
   yPosition: DEFAULT_POSITION?.lng as number,
 };
 
-export const useAnalysisStore = create<AnalysisState>((set) => ({
+export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   memberId: 0,
   locationSetting: defaultLocationSetting,
   categorySettingList: [],
@@ -50,4 +51,13 @@ export const useAnalysisStore = create<AnalysisState>((set) => ({
   },
 
   setFreewriting: (prompt: string) => set({ textInputSetting: { inputText: prompt } }),
+
+  getSettings: () => {
+    return {
+      memberId: get().memberId,
+      locationSetting: get().locationSetting,
+      categorySettingList: get().categorySettingList,
+      textInputSetting: get().textInputSetting,
+    };
+  },
 }));

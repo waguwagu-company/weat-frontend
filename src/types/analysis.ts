@@ -29,6 +29,7 @@ interface PlaceImage {
 }
 
 export interface PlaceResult {
+  analysisResultDetailId: number;
   placeId: number;
   placeName: string;
   placeAddress: string;

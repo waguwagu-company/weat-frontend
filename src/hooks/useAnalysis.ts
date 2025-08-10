@@ -5,6 +5,7 @@ import {
   getAnalysisStatus,
   getAnalysisSettingStatus,
 } from '@/lib/api/analysis';
+import { useAnalysisStore } from '@/stores';
 
 export const useAnalysis = () => {
   return useMutation({
@@ -14,9 +15,11 @@ export const useAnalysis = () => {
 };
 
 export const useAnalysisSettings = () => {
+  const settings = useAnalysisStore.getState().getSettings();
+
   return useMutation({
     mutationKey: ['submitAnalysisSettings'],
-    mutationFn: submitAnalysisSettings,
+    mutationFn: () => submitAnalysisSettings(settings),
   });
 };
 
