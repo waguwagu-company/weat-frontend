@@ -3,7 +3,7 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAnalysisStatus } from '@/hooks/useAnalysis';
-import Loading from '@/components/Loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { RotateCw } from 'lucide-react';
 
@@ -39,7 +39,7 @@ export default function MeetingPage() {
     setHref(window.location.href);
   }, []);
 
-  if (!isSuccess) return <Loading />;
+  if (!isSuccess) return <LoadingSpinner />;
 
   const { submittedCount } = analysisStatus.data;
 

@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { LoadScriptNext, GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useAnalysisStore } from '@/stores';
-import Loading from '@/components/Loading';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import MapGPS from '@/assets/images/button-map-gps.svg';
 import { DEFAULT_POSITION } from '@/constants/location';
@@ -73,7 +73,7 @@ export default function Map() {
   return (
     <LoadScriptNext
       googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}
-      loadingElement={<Loading />}
+      loadingElement={<LoadingSpinner />}
     >
       <>
         <button
