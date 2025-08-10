@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Lottie from 'lottie-react';
+import lottieLoading from '@/assets/animations/lottie-loading.json';
 import { useAnalysisStore } from '@/stores';
 import { useAnalysis, useAnalysisSettings, useAnalysisStatus } from '@/hooks/useAnalysis';
 import { useGetGroupResults } from '@/hooks/useGroup';
@@ -68,7 +70,7 @@ export default function LoadingPage() {
   return (
     <main className="w-full h-full flex justify-center items-center">
       <section>
-        <img src="/images/loading-60fps.gif" alt="로딩" />
+        <Lottie animationData={lottieLoading} loop autoplay />
         <AnimatePresence mode="wait">
           <motion.h1
             key={textIndex}
@@ -76,7 +78,7 @@ export default function LoadingPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.6 }}
-            className="font-semibold text-xl text-gradient text-center pb-20"
+            className="font-semibold text-xl text-gradient text-center pt-5 pb-15"
           >
             {loadingText[textIndex]}
           </motion.h1>
