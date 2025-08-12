@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { toast } from 'sonner';
 import { useGroupStore, useAnalysisStore } from '@/stores';
 import { useAnalysisSettings } from '@/hooks/useAnalysis';
 import { Button } from '@/components/ui/button';
@@ -25,11 +26,21 @@ export default function PromptPage() {
   };
 
   const enterPrompt = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setPrompt(e.target.value);
-
     const textarea = e.target;
+
+    if (textarea.value.length >= 100) {
+      toast('공백을 포함해 100자까지만 입력할 수 있어요.', {
+        style: {
+          marginBottom: '140px',
+        },
+      });
+      return;
+    }
+
     textarea.style.height = 'auto';
     textarea.style.height = `${textarea.scrollHeight}px`;
+
+    setPrompt(textarea.value);
   };
 
   const savePrompt = () => {

@@ -2,6 +2,7 @@
 
 import { ReactNode, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { toast } from 'sonner';
 import { Share2, ChevronLeft } from 'lucide-react';
 
 function ShareButton() {
@@ -9,6 +10,8 @@ function ShareButton() {
 
   const copyLink = () => {
     navigator.clipboard.writeText(href);
+
+    toast('결과 링크가 클립보드에 복사됐어요.', { position: 'top-center' });
   };
 
   useEffect(() => {
