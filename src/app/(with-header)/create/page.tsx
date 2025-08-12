@@ -2,7 +2,6 @@
 
 import { useRouter } from 'next/navigation';
 import { useCreateGroup } from '@/hooks/useGroup';
-import { useCategories } from '@/hooks/useCategory';
 import { Button } from '@/components/ui/button';
 import IconGroup from '@/assets/images/icon-group.svg';
 import IconSolo from '@/assets/images/icon-solo.svg';
@@ -10,16 +9,13 @@ import IconSolo from '@/assets/images/icon-solo.svg';
 export default function CreatePage() {
   const router = useRouter();
   const { mutate } = useCreateGroup();
-  const { isSuccess: isSuccessCategories } = useCategories();
 
   const start = (isSolo: boolean) => {
     mutate(isSolo, {
       onSuccess: (response) => {
-        if (isSuccessCategories) {
-          const groupId = response.data.groupId;
-          const path = isSolo ? `/${groupId}/location` : `/${groupId}`;
-          router.push(path);
-        }
+        const groupId = response.data.groupId;
+        const path = isSolo ? `/${groupId}/location` : `/${groupId}`;
+        router.push(path);
       },
     });
   };

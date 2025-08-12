@@ -15,7 +15,7 @@ export default function CategoryBox({
   handlerClick,
 }: CategoryProps) {
   return (
-    <article>
+    <article className="snap-start">
       <h3 className="text-lg font-semibold pb-2">{title}</h3>
       <ul className="flex flex-wrap gap-2">
         {tags.map((tag) => (

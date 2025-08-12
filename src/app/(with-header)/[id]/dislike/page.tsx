@@ -19,9 +19,11 @@ export default function CategoryDislikePage() {
     router.push(`/${params.id}/prompt`);
   };
 
+  if (!categories.length) router.push(`/${params.id}/like`);
+
   return (
-    <div className="h-full overflow-y-scroll px-5 py-7">
-      <section className="flex flex-col gap-6">
+    <div className="h-full flex flex-col justify-between">
+      <section className="w-full h-full px-5 mt-7 flex flex-col gap-6 overflow-y-auto scroll-smooth snap-y">
         {categories.map((category) => (
           <CategoryBox
             key={category.categoryId}
@@ -33,11 +35,13 @@ export default function CategoryDislikePage() {
           />
         ))}
       </section>
-      <Button variant="primary" className="mt-7" disabled={tagCount === 0} onClick={saveDislike}>
-        {tagCount === 0
-          ? `${BAD_MAX}개까지 선택할 수 있어요. (${tagCount}/${BAD_MAX})`
-          : `다 선택했어요. (${tagCount}/${BAD_MAX})`}
-      </Button>
+      <div className="w-full h-fit px-5 py-7">
+        <Button variant="primary" disabled={tagCount === 0} onClick={saveDislike}>
+          {tagCount === 0
+            ? `${BAD_MAX}개까지 선택할 수 있어요. (${tagCount}/${BAD_MAX})`
+            : `다 선택했어요. (${tagCount}/${BAD_MAX})`}
+        </Button>
+      </div>
     </div>
   );
 }
