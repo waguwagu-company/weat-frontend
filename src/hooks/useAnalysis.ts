@@ -33,9 +33,15 @@ export const useAnalysisStatus = (groupId: string) => {
   });
 };
 
-export const useAnalysisSettingStatus = (memberId: number) => {
+export const useAnalysisSettingStatus = () => {
+  const memberId = useAnalysisStore.getState().memberId;
+
   return useQuery({
     queryKey: ['getAnalysisSettingStatus', memberId],
     queryFn: () => getAnalysisSettingStatus(memberId),
+    select: (response) => {
+      return response.data;
+    },
+    enabled: memberId > 0,
   });
 };

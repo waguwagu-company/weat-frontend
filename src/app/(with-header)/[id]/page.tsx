@@ -2,7 +2,8 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { useAnalysisStatus } from '@/hooks/useAnalysis';
+import { useAnalysisStore } from '@/stores';
+import { useAnalysisStatus, useAnalysisSettingStatus } from '@/hooks/useAnalysis';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { RotateCw } from 'lucide-react';
@@ -14,12 +15,19 @@ export default function MeetingPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [href, setHref] = useState<string>('');
+  const { setMemberId } = useAnalysisStore();
 
   const {
     data: analysisStatus,
     isSuccess: isSuccessStatus,
     refetch: refetchStatus,
   } = useAnalysisStatus(params.id);
+
+  const {
+    data: settingStatus,
+    isSuccess: isSuccessSettingStatus,
+    refetch: refetchSettingStatus,
+  } = useAnalysisSettingStatus();
 
   const getCountingText = (count: number) => {
     if (count === HEADCOUNT_MIN) return '아직 아무도 조건을 알려주지 않았어요.';
@@ -29,6 +37,7 @@ export default function MeetingPage() {
 
   const refresh = () => {
     refetchStatus();
+    refetchSettingStatus();
   };
 
   const copyLink = () => {
@@ -39,13 +48,23 @@ export default function MeetingPage() {
     router.push(`/${params.id}/location`);
   };
 
+  const getResult = () => {
+    router.replace(`/${params.id}/result`);
+  };
+
   useEffect(() => {
+    const storedMemberId = Number(window.localStorage.getItem('memberId') || '0');
+
+    setMemberId(storedMemberId);
     setHref(window.location.href);
   }, []);
 
-  if (!isSuccessStatus) return <LoadingSpinner />;
+  if (!isSuccessStatus || !isSuccessSettingStatus) return <LoadingSpinner />;
 
-  const { submittedCount } = analysisStatus;
+  const { isAnalysisStartConditionSatisfied, isSingleMemberGroup, submittedCount } = analysisStatus;
+  const { isSubmitted } = settingStatus;
+
+  if (isSingleMemberGroup) router.replace('/create');
 
   return (
     <section className="h-full flex flex-col justify-end gap-[22vh]">
@@ -68,12 +87,21 @@ export default function MeetingPage() {
         </div>
       </article>
       <div>
-        <div className="flex flex-col gap-2 p-[20px]">
-          <Button variant="secondary" className="h-fit p-[16px]" onClick={copyLink}>
-            그룹에 초대하기
+        <div className="flex flex-col gap-2 p-5">
+          <Button
+            variant="secondary"
+            className="h-fit p-4"
+            onClick={isAnalysisStartConditionSatisfied ? getResult : copyLink}
+          >
+            {isAnalysisStartConditionSatisfied ? '결과 조회하기' : '그룹에 초대하기'}
           </Button>
-          <Button variant="primary" className="h-fit p-[16px]" onClick={enterLocation}>
-            나의 조건 알려주기
+          <Button
+            variant="primary"
+            className="h-fit p-4"
+            disabled={isSubmitted}
+            onClick={enterLocation}
+          >
+            {isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
           </Button>
         </div>
         <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>
