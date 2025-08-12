@@ -1,12 +1,20 @@
 import axiosInstance from '@/lib/axiosInstance';
 
 import type { ApiResponse } from '@/types/api';
-import type { Group } from '@/types/group';
 import type { PlaceResult } from '@/types/analysis';
 
-type CreateGroupResponse = Omit<Group, 'isSingleMemberGroup'>;
-type JoinGroupResponse = Pick<Group, 'memberId'>;
-type GroupResultsResponse = { groupResultDetailList: PlaceResult[] };
+interface CreateGroupResponse {
+  groupId: string;
+  memberId: number;
+}
+
+interface JoinGroupResponse {
+  memberId: number;
+}
+
+interface GroupResultsResponse {
+  groupResultDetailList: PlaceResult[];
+}
 
 /** 그룹 생성 */
 export const createGroup = async (isSingleMemberGroup: boolean) => {

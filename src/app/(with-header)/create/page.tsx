@@ -10,11 +10,11 @@ export default function CreatePage() {
   const router = useRouter();
   const { mutate } = useCreateGroup();
 
-  const start = (isSolo: boolean) => {
-    mutate(isSolo, {
+  const start = (isSingle: boolean) => {
+    mutate(isSingle, {
       onSuccess: (response) => {
         const groupId = response.data.groupId;
-        const path = isSolo ? `/${groupId}/location` : `/${groupId}`;
+        const path = isSingle ? `/${groupId}/location` : `/${groupId}`;
         router.push(path);
       },
     });
