@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import { useAnalysisStore } from '@/stores';
 import { useAnalysis, useAnalysisSettings, useAnalysisStatus } from '@/hooks/useAnalysis';
 import { ANALYSIS_STATUS, LOADING_TEXT } from '@/constants/analysis';
 
@@ -10,6 +11,7 @@ import Loading from './Loading';
 export default function LoadingPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const { resetSettings } = useAnalysisStore();
 
   const { mutate: submitSettings } = useAnalysisSettings();
   const { mutate: startAnalysis, isSuccess: isSuccessAnalysis } = useAnalysis();
@@ -23,6 +25,7 @@ export default function LoadingPage() {
     submitSettings(void 0, {
       onSuccess: () => {
         startAnalysis(params.id);
+        resetSettings();
       },
     });
   }, [params.id]);

@@ -2,7 +2,8 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAnalysisStore } from '@/stores';
+import { useGroupStore, useAnalysisStore } from '@/stores';
+import { useAnalysisSettings } from '@/hooks/useAnalysis';
 import { Button } from '@/components/ui/button';
 
 import type { ChangeEvent } from 'react';
@@ -10,7 +11,9 @@ import type { ChangeEvent } from 'react';
 export default function PromptPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const { setFreewriting } = useAnalysisStore();
+  const { isSingle } = useGroupStore();
+  const { setFreewriting, resetSettings } = useAnalysisStore();
+  const { mutate: submitSettings } = useAnalysisSettings();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState<string>('');
@@ -31,7 +34,17 @@ export default function PromptPage() {
 
   const savePrompt = () => {
     setFreewriting(prompt.trim());
-    router.push(`/${params.id}/loading`);
+
+    if (isSingle) {
+      router.replace(`/${params.id}/loading`);
+    } else {
+      submitSettings(void 0, {
+        onSuccess: () => {
+          resetSettings();
+          router.replace(`/${params.id}`);
+        },
+      });
+    }
   };
 
   useEffect(() => {

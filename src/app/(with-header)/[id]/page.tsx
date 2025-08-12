@@ -3,7 +3,8 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
-import { useAnalysisStore } from '@/stores';
+import { useGroupStore, useAnalysisStore } from '@/stores';
+import { useJoinGroup } from '@/hooks/useGroup';
 import { useAnalysisStatus, useAnalysisSettingStatus } from '@/hooks/useAnalysis';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
@@ -16,17 +17,21 @@ export default function MeetingPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [href, setHref] = useState<string>('');
+  const { setIsSingle } = useGroupStore();
   const { setMemberId } = useAnalysisStore();
+
+  const { mutate: joinGroup } = useJoinGroup();
 
   const {
     data: analysisStatus,
     isSuccess: isSuccessStatus,
+    isFetching: isFetchingStatus,
     refetch: refetchStatus,
   } = useAnalysisStatus(params.id);
 
   const {
     data: settingStatus,
-    isSuccess: isSuccessSettingStatus,
+    isFetching: isFetchingSettingStatus,
     refetch: refetchSettingStatus,
   } = useAnalysisSettingStatus();
 
@@ -52,6 +57,7 @@ export default function MeetingPage() {
   };
 
   const enterLocation = () => {
+    joinGroup(params.id);
     router.push(`/${params.id}/location`);
   };
 
@@ -66,12 +72,19 @@ export default function MeetingPage() {
     setHref(window.location.href);
   }, []);
 
-  if (!isSuccessStatus || !isSuccessSettingStatus) return <LoadingSpinner />;
+  useEffect(() => {
+    if (isSuccessStatus) {
+      const isSingle = analysisStatus.isSingleMemberGroup;
 
-  const { isAnalysisStartConditionSatisfied, isSingleMemberGroup, submittedCount } = analysisStatus;
-  const { isSubmitted } = settingStatus;
+      setIsSingle(isSingle);
+      if (isSingle) router.replace('/create');
+    }
+  }, [isSuccessStatus, analysisStatus?.isSingleMemberGroup]);
 
-  if (isSingleMemberGroup) router.replace('/create');
+  if (!isSuccessStatus) return <LoadingSpinner />;
+
+  const { isAnalysisStartConditionSatisfied, submittedCount } = analysisStatus;
+  const isSubmitted = settingStatus?.isSubmitted;
 
   return (
     <section className="h-full flex flex-col justify-end gap-[22vh]">
@@ -85,7 +98,7 @@ export default function MeetingPage() {
           <p className="text-lg font-semibold">{getCountingText(submittedCount)}</p>
           <button
             type="button"
-            className={`cursor-pointer active:animate-spin`}
+            className={`cursor-pointer active:animate-spin ${isFetchingStatus || isFetchingSettingStatus ? 'animate-spin' : ''}`}
             aria-label="새로고침"
             onClick={refresh}
           >
@@ -96,7 +109,7 @@ export default function MeetingPage() {
       <div>
         <div className="flex flex-col gap-2 p-5">
           <Button
-            variant="secondary"
+            variant={submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
             className="h-fit p-4"
             onClick={isAnalysisStartConditionSatisfied ? getResult : copyLink}
           >
@@ -105,7 +118,7 @@ export default function MeetingPage() {
           <Button
             variant="primary"
             className="h-fit p-4"
-            disabled={isSubmitted}
+            disabled={isSubmitted || submittedCount === HEADCOUNT_MAX}
             onClick={enterLocation}
           >
             {isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}

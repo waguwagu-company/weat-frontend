@@ -12,6 +12,7 @@ interface AnalysisState extends AnalysisSettings {
   setPreference: (_categories: Category[]) => void;
   setFreewriting: (_prompt: string) => void;
   getSettings: () => AnalysisSettings;
+  resetSettings: () => void;
 }
 
 const defaultLocationSetting: LocationSetting = {
@@ -60,4 +61,12 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
       textInputSetting: get().textInputSetting,
     };
   },
+
+  resetSettings: () =>
+    set({
+      memberId: 0,
+      locationSetting: defaultLocationSetting,
+      categorySettingList: [],
+      textInputSetting: { inputText: '' },
+    }),
 }));
