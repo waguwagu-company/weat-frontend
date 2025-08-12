@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore, useAnalysisStore } from '@/stores';
 import CategoryBox from '@/components/CategoryBox';
@@ -19,7 +20,9 @@ export default function CategoryDislikePage() {
     router.push(`/${params.id}/prompt`);
   };
 
-  if (!categories.length) router.push(`/${params.id}/like`);
+  useEffect(() => {
+    if (!categories.length) router.push(`/${params.id}/like`);
+  }, [categories.length, params.id]);
 
   return (
     <div className="h-full flex flex-col justify-between">
