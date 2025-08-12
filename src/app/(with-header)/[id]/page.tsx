@@ -2,6 +2,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 import { useAnalysisStore } from '@/stores';
 import { useAnalysisStatus, useAnalysisSettingStatus } from '@/hooks/useAnalysis';
 import LoadingSpinner from '@/components/LoadingSpinner';
@@ -42,6 +43,12 @@ export default function MeetingPage() {
 
   const copyLink = () => {
     navigator.clipboard.writeText(href);
+
+    toast('초대 링크가 클립보드에 복사됐어요.', {
+      style: {
+        marginBottom: '190px',
+      },
+    });
   };
 
   const enterLocation = () => {

@@ -1,8 +1,10 @@
 import { ReactNode } from 'react';
+import { Toaster } from 'sonner';
 import { pretendard, paperlogy, cafe24proup } from './fonts';
 import Providers from './providers';
 
 import type { Metadata, Viewport } from 'next';
+import type { CSSProperties } from 'react';
 
 import './globals.css';
 
@@ -18,6 +20,18 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
+const toastOptions = {
+  style: {
+    width: 'fit-content',
+    maxWidth: '100%',
+    padding: '8px 20px',
+    background: 'var(--color-primary)',
+    color: 'white',
+    border: 'none',
+    boxShadow: '0px 4px 4px 0px #00000040',
+  } as CSSProperties,
+};
+
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ko">
@@ -26,6 +40,11 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       >
         <Providers>
           <div className="w-full max-w-[400px] h-full min-h-screen mx-auto bg-white shadow-md">
+            <Toaster
+              position="bottom-center"
+              className="flex justify-center"
+              toastOptions={toastOptions}
+            />
             {children}
           </div>
         </Providers>
