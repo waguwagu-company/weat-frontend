@@ -7,8 +7,7 @@ import { useGetGroupResults } from '@/hooks/useGroup';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import PlaceCard from '@/components/PlaceCard';
-import Loading from '@/components/Loading';
-import { LOADING_TEXT } from '@/constants/analysis';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 import type { CarouselApi } from '@/components/ui/carousel';
 import type { PlaceResult } from '@/types/analysis';
@@ -66,13 +65,7 @@ export default function ResultPage() {
     });
   }, [api]);
 
-  if (!data || isPending) {
-    return (
-      <main className="w-full h-full flex justify-center items-center">
-        <Loading loopText={LOADING_TEXT} />
-      </main>
-    );
-  }
+  if (!data || isPending) return <LoadingSpinner />;
 
   const results: PlaceResult[] = data?.data.groupResultDetailList || mockData;
 

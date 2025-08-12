@@ -15,7 +15,11 @@ export default function MeetingPage() {
   const params = useParams<{ id: string }>();
   const [href, setHref] = useState<string>('');
 
-  const { data: analysisStatus, isSuccess, refetch: refetchStatus } = useAnalysisStatus(params.id);
+  const {
+    data: analysisStatus,
+    isSuccess: isSuccessStatus,
+    refetch: refetchStatus,
+  } = useAnalysisStatus(params.id);
 
   const getCountingText = (count: number) => {
     if (count === HEADCOUNT_MIN) return '아직 아무도 조건을 알려주지 않았어요.';
@@ -39,9 +43,9 @@ export default function MeetingPage() {
     setHref(window.location.href);
   }, []);
 
-  if (!isSuccess) return <LoadingSpinner />;
+  if (!isSuccessStatus) return <LoadingSpinner />;
 
-  const { submittedCount } = analysisStatus.data;
+  const { submittedCount } = analysisStatus;
 
   return (
     <section className="h-full flex flex-col justify-end gap-[22vh]">

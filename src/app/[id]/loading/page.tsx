@@ -35,10 +35,19 @@ export default function LoadingPage() {
   }, [isSuccessAnalysis]);
 
   useEffect(() => {
-    if (isSuccessStatus && analysisStatus.data.analysisStatus === ANALYSIS_STATUS.COMPLETED) {
-      router.push(`/${params.id}/result`);
+    if (isSuccessStatus) {
+      switch (analysisStatus.analysisStatus) {
+        case ANALYSIS_STATUS.FAILED:
+          router.replace(`/${params.id}/no-result`);
+          break;
+        case ANALYSIS_STATUS.COMPLETED:
+          router.replace(`/${params.id}/result`);
+          break;
+        default:
+          break;
+      }
     }
-  }, [isSuccessStatus, analysisStatus?.data?.analysisStatus, params.id]);
+  }, [isSuccessStatus, analysisStatus?.analysisStatus, params.id]);
 
   return (
     <main className="w-full h-full flex justify-center items-center">

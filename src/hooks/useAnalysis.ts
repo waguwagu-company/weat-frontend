@@ -27,6 +27,9 @@ export const useAnalysisStatus = (groupId: string) => {
   return useQuery({
     queryKey: ['getAnalysisStatus', groupId],
     queryFn: () => getAnalysisStatus(groupId),
+    select: (response) => {
+      return response.data;
+    },
   });
 };
 
