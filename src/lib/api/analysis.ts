@@ -28,6 +28,7 @@ interface AnalysisSettingStatusResponse {
   isSubmitted: boolean;
 }
 
+/** 분석 시작 요청 */
 export const startAnalysis = async (groupId: string) => {
   const request = { groupId };
   const response = await axiosInstance.post<ApiResponse<StartAnalysisResponse>>(
@@ -38,6 +39,7 @@ export const startAnalysis = async (groupId: string) => {
   return response.data;
 };
 
+/** 분석 설정 제출 */
 export const submitAnalysisSettings = async (settings: AnalysisSettings) => {
   const response = await axiosInstance.post<ApiResponse<SubmitAnalysisSettingResponse>>(
     `/api/analysis/settings`,
@@ -47,6 +49,7 @@ export const submitAnalysisSettings = async (settings: AnalysisSettings) => {
   return response.data;
 };
 
+/** 그룹별 분석 상태 조회 */
 export const getAnalysisStatus = async (groupId: string) => {
   const response = await axiosInstance.get<ApiResponse<AnalysisStatusResponse>>(
     `/api/analysis/status?groupId=${groupId}`
@@ -55,6 +58,7 @@ export const getAnalysisStatus = async (groupId: string) => {
   return response.data;
 };
 
+/** 멤버별 분석 설정 제출 여부 조회 */
 export const getAnalysisSettingStatus = async (memberId: number) => {
   const response = await axiosInstance.get<ApiResponse<AnalysisSettingStatusResponse>>(
     `/api/analysis/settings/status?memberId=${memberId}`
