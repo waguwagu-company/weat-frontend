@@ -1,4 +1,4 @@
-import Map from '@/components/Map';
+import Map from './Map';
 
 export default function LocationPage() {
   return (

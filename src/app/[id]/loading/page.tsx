@@ -3,8 +3,9 @@
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAnalysis, useAnalysisSettings, useAnalysisStatus } from '@/hooks/useAnalysis';
-import Loading from '@/components/Loading';
 import { ANALYSIS_STATUS, LOADING_TEXT } from '@/constants/analysis';
+
+import Loading from './Loading';
 
 export default function LoadingPage() {
   const router = useRouter();
