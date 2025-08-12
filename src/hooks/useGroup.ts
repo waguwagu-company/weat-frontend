@@ -6,13 +6,13 @@ export const useCreateGroup = () => {
   return useMutation({
     mutationKey: ['createGroup'],
     mutationFn: createGroup,
-    onSuccess: (data) => {
-      const memberId = data.data.memberId;
+    onSuccess: (response) => {
+      const memberId = response.data.memberId;
 
       useAnalysisStore.setState({ memberId });
       localStorage.setItem('memberId', memberId.toString());
 
-      return data;
+      return response.data;
     },
   });
 };
@@ -21,13 +21,13 @@ export const useJoinGroup = () => {
   return useMutation({
     mutationKey: ['joinGroup'],
     mutationFn: joinGroup,
-    onSuccess: (data) => {
-      const memberId = data.data.memberId;
+    onSuccess: (response) => {
+      const memberId = response.data.memberId;
 
       useAnalysisStore.setState({ memberId });
       localStorage.setItem('memberId', memberId.toString());
 
-      return data;
+      return response.data;
     },
   });
 };

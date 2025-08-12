@@ -57,12 +57,16 @@ export default function MeetingPage() {
   };
 
   const enterLocation = () => {
-    joinGroup(params.id);
-    router.push(`/${params.id}/location`);
+    joinGroup(params.id, {
+      onSuccess: (response) => {
+        setIsSingle(response.data.isSingleMemberGroup);
+        router.push(`/${params.id}/location`);
+      },
+    });
   };
 
   const getResult = () => {
-    router.replace(`/${params.id}/result`);
+    router.replace(`/${params.id}/loading`);
   };
 
   useEffect(() => {
@@ -72,30 +76,18 @@ export default function MeetingPage() {
     setHref(window.location.href);
   }, []);
 
-  useEffect(() => {
-    if (isSuccessStatus) {
-      const isSingle = analysisStatus.isSingleMemberGroup;
-
-      setIsSingle(isSingle);
-      if (isSingle) router.replace('/create');
-    }
-  }, [isSuccessStatus, analysisStatus?.isSingleMemberGroup]);
-
   if (!isSuccessStatus) return <LoadingSpinner />;
-
-  const { isAnalysisStartConditionSatisfied, submittedCount } = analysisStatus;
-  const isSubmitted = settingStatus?.isSubmitted;
 
   return (
     <section className="h-full flex flex-col justify-end gap-[22vh]">
       <article>
         <h3
-          className={`font-cafe24-pro-up text-[128px] text-center ${submittedCount > 0 ? 'text-gradient' : 'text-muted-medium'}`}
+          className={`font-cafe24-pro-up text-[128px] text-center ${analysisStatus?.submittedCount > 0 ? 'text-gradient' : 'text-muted-medium'}`}
         >
-          {submittedCount}
+          {analysisStatus?.submittedCount}
         </h3>
         <div className="w-full flex justify-center items-center gap-2">
-          <p className="text-lg font-semibold">{getCountingText(submittedCount)}</p>
+          <p className="text-lg font-semibold">{getCountingText(analysisStatus?.submittedCount)}</p>
           <button
             type="button"
             className={`cursor-pointer active:animate-spin ${isFetchingStatus || isFetchingSettingStatus ? 'animate-spin' : ''}`}
@@ -109,19 +101,23 @@ export default function MeetingPage() {
       <div>
         <div className="flex flex-col gap-2 p-5">
           <Button
-            variant={submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
+            variant={analysisStatus?.submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
             className="h-fit p-4"
-            onClick={isAnalysisStartConditionSatisfied ? getResult : copyLink}
+            onClick={analysisStatus?.isAnalysisStartConditionSatisfied ? getResult : copyLink}
           >
-            {isAnalysisStartConditionSatisfied ? '결과 조회하기' : '그룹에 초대하기'}
+            {analysisStatus?.isAnalysisStartConditionSatisfied
+              ? '결과 조회하기'
+              : '그룹에 초대하기'}
           </Button>
           <Button
             variant="primary"
             className="h-fit p-4"
-            disabled={isSubmitted || submittedCount === HEADCOUNT_MAX}
+            disabled={
+              settingStatus?.isSubmitted || analysisStatus?.submittedCount === HEADCOUNT_MAX
+            }
             onClick={enterLocation}
           >
-            {isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
+            {settingStatus?.isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
           </Button>
         </div>
         <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>

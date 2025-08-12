@@ -30,6 +30,8 @@ export const useAnalysisStatus = (groupId: string) => {
     select: (response) => {
       return response.data;
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };
 
@@ -43,5 +45,7 @@ export const useAnalysisSettingStatus = () => {
       return response.data;
     },
     enabled: memberId > 0,
+    staleTime: 0,
+    refetchOnMount: true,
   });
 };

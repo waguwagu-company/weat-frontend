@@ -10,6 +10,7 @@ interface CreateGroupResponse {
 
 interface JoinGroupResponse {
   memberId: number;
+  isSingleMemberGroup: boolean;
 }
 
 interface GroupResultsResponse {

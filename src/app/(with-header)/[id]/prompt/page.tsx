@@ -43,19 +43,20 @@ export default function PromptPage() {
     setPrompt(textarea.value);
   };
 
-  const savePrompt = () => {
-    setFreewriting(prompt.trim());
+  const savePrompt = (isSaving: boolean) => {
+    if (isSaving) setFreewriting(prompt.trim());
 
-    if (isSingle) {
-      router.replace(`/${params.id}/loading`);
-    } else {
-      submitSettings(void 0, {
-        onSuccess: () => {
-          resetSettings();
+    submitSettings(void 0, {
+      onSuccess: () => {
+        resetSettings();
+
+        if (isSingle) {
+          router.replace(`/${params.id}/loading`);
+        } else {
           router.replace(`/${params.id}`);
-        },
-      });
-    }
+        }
+      },
+    });
   };
 
   useEffect(() => {
@@ -85,14 +86,14 @@ export default function PromptPage() {
           variant={isEmpty ? 'gradient' : 'primary'}
           size="round"
           className={isEmpty ? 'pointer-events-none' : ''}
-          onClick={savePrompt}
+          onClick={() => savePrompt(true)}
         >
           {getButtonText()}
         </Button>
         <button
           type="button"
           className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
-          onClick={() => router.push(`/${params.id}/loading`)}
+          onClick={() => savePrompt(false)}
         >
           입력하지 않고 넘어갈래요.
         </button>
