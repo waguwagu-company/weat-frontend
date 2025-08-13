@@ -43,5 +43,5 @@ export const getGroupResults = async (groupId: string) => {
     `/api/group/${groupId}/result`
   );
 
-  return response.data;
+  return response.data.data;
 };

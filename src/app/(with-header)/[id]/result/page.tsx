@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ThumbsUp } from 'lucide-react';
+import { useAnalysisStore } from '@/stores';
 import { useGetGroupResults } from '@/hooks/useGroup';
+import { useGetLikes, useToggleLike, useGetLikeStatus } from '@/hooks/useLikes';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import PlaceCard from '@/components/PlaceCard';
@@ -38,7 +40,13 @@ export default function ResultPage() {
   const params = useParams<{ id: string }>();
   const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const { mutate, data, isPending } = useGetGroupResults();
+  const [currentResultId, setCurrentResultId] = useState<number>(0);
+  const { memberId, setMemberId } = useAnalysisStore();
+
+  const { mutate, data, isPending, isSuccess } = useGetGroupResults();
+  const { data: likeCount, refetch: refetchLikeCount } = useGetLikes(currentResultId);
+  const { mutate: toggleLike } = useToggleLike(currentResultId);
+  const { data: isLiked, refetch: refetchIsLiked } = useGetLikeStatus(currentResultId);
 
   const getBasisTitle = (type: string) => {
     switch (type) {
@@ -49,8 +57,25 @@ export default function ResultPage() {
     }
   };
 
+  const likeResult = () => {
+    toggleLike(void 0, {
+      onSuccess: () => {
+        refetchIsLiked();
+        refetchLikeCount();
+      },
+    });
+  };
+
   useEffect(() => {
-    mutate(params.id);
+    if (memberId < 1) setMemberId(Number(window.localStorage.getItem('memberId') || '0'));
+  }, []);
+
+  useEffect(() => {
+    mutate(params.id, {
+      onSuccess: (data) => {
+        setCurrentResultId(data.groupResultDetailList[currentIndex].analysisResultDetailId);
+      },
+    });
   }, [params.id]);
 
   useEffect(() => {
@@ -58,14 +83,26 @@ export default function ResultPage() {
 
     setCurrentIndex(api.selectedScrollSnap());
 
+    if (isSuccess) {
+      setCurrentResultId(
+        data.groupResultDetailList[api.selectedScrollSnap()].analysisResultDetailId
+      );
+    }
+
     api.on('select', () => {
       setCurrentIndex(api.selectedScrollSnap());
+
+      if (isSuccess) {
+        setCurrentResultId(
+          data.groupResultDetailList[api.selectedScrollSnap()].analysisResultDetailId
+        );
+      }
     });
   }, [api]);
 
   if (!data || isPending) return <LoadingSpinner />;
 
-  const results: PlaceResult[] = data?.data.groupResultDetailList || mockData;
+  const results: PlaceResult[] = data?.groupResultDetailList || mockData;
 
   return (
     <section className="w-full h-full flex flex-col justify-between">
@@ -87,7 +124,7 @@ export default function ResultPage() {
                   placeName={detail.placeName}
                   placeAddress={detail.placeAddress}
                   placeImageList={detail.placeImageList}
-                  likeCount={0}
+                  likeCount={likeCount || 0}
                   isCurrent={index === currentIndex}
                 />
               </CarouselItem>
@@ -104,8 +141,18 @@ export default function ResultPage() {
         </article>
       </div>
       <div className="flex flex-col items-center gap-5 pb-7">
-        <Button variant="primary" size="round" className="flex-col text-xs font-normal">
-          <ThumbsUp size={30} />
+        <Button
+          variant="primary"
+          size="round"
+          className="flex-col text-xs font-normal"
+          onClick={likeResult}
+        >
+          <ThumbsUp
+            size={30}
+            fill={isLiked ? 'white' : 'transparent'}
+            strokeWidth={isLiked ? 0 : 2}
+            className="transition-all"
+          />
           좋아요
         </Button>
         <button
