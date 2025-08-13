@@ -50,9 +50,7 @@ export default function MeetingPage() {
     navigator.clipboard.writeText(href);
 
     toast('초대 링크가 클립보드에 복사됐어요.', {
-      style: {
-        marginBottom: '190px',
-      },
+      style: { marginBottom: '190px' },
     });
   };
 
@@ -90,7 +88,7 @@ export default function MeetingPage() {
           <p className="text-lg font-semibold">{getCountingText(analysisStatus?.submittedCount)}</p>
           <button
             type="button"
-            className={`cursor-pointer active:animate-spin ${isFetchingStatus || isFetchingSettingStatus ? 'animate-spin' : ''}`}
+            className={`cursor-pointer hover:animate-spin ${isFetchingStatus || isFetchingSettingStatus ? 'animate-spin' : ''}`}
             aria-label="새로고침"
             onClick={refresh}
           >

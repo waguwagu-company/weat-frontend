@@ -30,9 +30,7 @@ export default function PromptPage() {
 
     if (textarea.value.length >= 100) {
       toast('공백을 포함해 100자까지만 입력할 수 있어요.', {
-        style: {
-          marginBottom: '140px',
-        },
+        style: { marginBottom: '140px' },
       });
       return;
     }
