@@ -6,8 +6,20 @@ import { toast } from 'sonner';
 import { useGroupStore, useAnalysisStore } from '@/stores';
 import { useJoinGroup } from '@/hooks/useGroup';
 import { useAnalysisStatus, useAnalysisSettingStatus } from '@/hooks/useAnalysis';
+
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { RotateCw } from 'lucide-react';
 
 const HEADCOUNT_MIN = 0;
@@ -17,6 +29,8 @@ export default function MeetingPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [href, setHref] = useState<string>('');
+  const [openAlert, setOpenAlert] = useState<boolean>(false);
+
   const { setIsSingle } = useGroupStore();
   const { setMemberId } = useAnalysisStore();
 
@@ -67,6 +81,14 @@ export default function MeetingPage() {
     router.replace(`/${params.id}/loading`);
   };
 
+  const confirmResult = () => {
+    setOpenAlert(true);
+    toast('친구가 아직 조건을 입력하고 있는지 확인해 주세요.', {
+      duration: 3000,
+      style: { marginBottom: '220px' },
+    });
+  };
+
   useEffect(() => {
     const storedMemberId = Number(window.localStorage.getItem('memberId') || '0');
 
@@ -96,30 +118,49 @@ export default function MeetingPage() {
           </button>
         </div>
       </article>
-      <div>
-        <div className="flex flex-col gap-2 p-5">
-          <Button
-            variant={analysisStatus?.submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
-            className="h-fit p-4"
-            onClick={analysisStatus?.isAnalysisStartConditionSatisfied ? getResult : copyLink}
-          >
-            {analysisStatus?.isAnalysisStartConditionSatisfied
-              ? '결과 조회하기'
-              : '그룹에 초대하기'}
-          </Button>
-          <Button
-            variant="primary"
-            className="h-fit p-4"
-            disabled={
-              settingStatus?.isSubmitted || analysisStatus?.submittedCount === HEADCOUNT_MAX
-            }
-            onClick={enterLocation}
-          >
-            {settingStatus?.isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
-          </Button>
+      <AlertDialog open={openAlert}>
+        <div>
+          <div className="flex flex-col gap-2 p-5">
+            <AlertDialogTrigger asChild>
+              <Button
+                variant={analysisStatus?.submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
+                className="h-fit p-4"
+                onClick={
+                  analysisStatus?.isAnalysisStartConditionSatisfied ? confirmResult : copyLink
+                }
+              >
+                {analysisStatus?.isAnalysisStartConditionSatisfied
+                  ? '결과 조회하기'
+                  : '그룹에 초대하기'}
+              </Button>
+            </AlertDialogTrigger>
+            <Button
+              variant="primary"
+              className="h-fit p-4"
+              disabled={
+                settingStatus?.isSubmitted || analysisStatus?.submittedCount === HEADCOUNT_MAX
+              }
+              onClick={enterLocation}
+            >
+              {settingStatus?.isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
+            </Button>
+          </div>
+          <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>
         </div>
-        <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>
-      </div>
+
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>그룹 결과를 조회할까요?</AlertDialogTitle>
+            <AlertDialogDescription>
+              입력이 완료된 사람들의 조건만 검색됩니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpenAlert(false)}>취소</AlertDialogCancel>
+            <AlertDialogAction onClick={getResult}>확인</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </section>
   );
 }

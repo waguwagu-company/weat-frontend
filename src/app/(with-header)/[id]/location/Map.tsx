@@ -98,6 +98,7 @@ export default function Map() {
 
       if (isSingle) {
         toast('반경 1km 이내의 가게들만 검색돼요.', {
+          duration: 3000,
           style: { marginBottom: '220px' },
         });
       }
