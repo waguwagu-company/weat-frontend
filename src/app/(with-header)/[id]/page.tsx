@@ -82,11 +82,15 @@ export default function MeetingPage() {
   };
 
   const confirmResult = () => {
-    setOpenAlert(true);
-    toast('친구가 아직 조건을 입력하고 있는지 확인해 주세요.', {
-      duration: 3000,
-      style: { marginBottom: '220px' },
-    });
+    if (analysisStatus?.submittedCount === HEADCOUNT_MAX) {
+      getResult();
+    } else {
+      setOpenAlert(true);
+      toast('친구가 아직 조건을 입력하고 있는지 확인해 주세요.', {
+        duration: 3000,
+        style: { marginBottom: '220px' },
+      });
+    }
   };
 
   useEffect(() => {
