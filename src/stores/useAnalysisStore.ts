@@ -3,12 +3,12 @@ import { DEFAULT_POSITION } from '@/constants/location';
 import { TAG_STATUS } from '@/constants/category';
 
 import type { AnalysisSettings, LocationSetting, CategorySetting } from '@/types/analysis';
-import type { MapPosition } from '@/types/location';
+import type { MapLatLng } from '@/types/googlemaps';
 import type { Category } from '@/types/category';
 
 interface AnalysisState extends AnalysisSettings {
   setMemberId: (_memberId: number) => void;
-  setLocation: (_position: MapPosition) => void;
+  setLocation: (_position: MapLatLng) => void;
   setPreference: (_categories: Category[]) => void;
   setFreewriting: (_prompt: string) => void;
   getSettings: () => AnalysisSettings;
@@ -28,7 +28,7 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
 
   setMemberId: (memberId: number) => set({ memberId }),
 
-  setLocation: (position: MapPosition) => {
+  setLocation: (position: MapLatLng) => {
     const setting: LocationSetting =
       !position || typeof position.lat !== 'number' || typeof position.lng !== 'number'
         ? defaultLocationSetting

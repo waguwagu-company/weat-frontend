@@ -1,6 +1,6 @@
-import type { MapPosition } from '@/types/location';
+import type { MapLatLng } from '@/types/googlemaps';
 
-export const DEFAULT_POSITION: MapPosition = {
-  lat: 37.564 as number,
-  lng: 127.002 as number,
+export const DEFAULT_POSITION: MapLatLng = {
+  lat: 37.5665,
+  lng: 126.978,
 } as const;
