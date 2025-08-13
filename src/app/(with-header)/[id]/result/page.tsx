@@ -15,21 +15,19 @@ import type { PlaceResult } from '@/types/analysis';
 const mockData: PlaceResult[] = [
   {
     analysisResultDetailId: 0,
-    placeId: 262,
-    placeName: '월가갈비',
-    placeAddress: '대한민국 서울 중구 세종대로18길 22 1층',
+    placeId: 0,
+    placeName: '위잇',
+    placeAddress: '서울 중구 세종대로 110',
     analysisResultContent: '',
     analysisBasisList: [
       {
-        analysisBasisType: 'REVIEW',
-        analysisBasisContent:
-          '갈비는 원래 좋아하지만 여기 고기는 진짜 부드럽고 양념도 제대로 배어 있어서 한 입 먹자마자 감탄 나왔어요\uD83D\uDD25 숯불에 구우니까 향까지 살아나서 밥이랑 같이 먹으니 조합이 완벽했어요ㅎㅎ 반찬도 깔끔하고 분위기도 좋아서 다음에도 또 올거같아여!!',
+        analysisBasisType: '',
+        analysisBasisContent: '위잇이 추천하는 식당이에요!',
       },
     ],
     placeImageList: [
       {
-        imageUrl:
-          'https://lh3.googleusercontent.com/places/ANXAkqFEeY_rMj1_OM1Yl6gVs_Z45v3-BpzB3bbVXN3XqN9AeDfWQXXbzja2YCZUdoE9b6aqR2zinDk6OOQ-6KWzSxEnWBiK4ErkHes=s1600-w400',
+        imageUrl: 'src/app/opengraph-image.png',
       },
     ],
   },
