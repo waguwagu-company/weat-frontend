@@ -1,24 +1,19 @@
 import { create } from 'zustand';
-import { DEFAULT_POSITION } from '@/constants/location';
 import { TAG_STATUS } from '@/constants/category';
 
 import type { AnalysisSettings, LocationSetting, CategorySetting } from '@/types/analysis';
-import type { MapLatLng } from '@/types/googlemaps';
 import type { Category } from '@/types/category';
 
 interface AnalysisState extends AnalysisSettings {
   setMemberId: (_memberId: number) => void;
-  setLocation: (_position: MapLatLng) => void;
+  setLocation: (_address: string) => void;
   setPreference: (_categories: Category[]) => void;
   setFreewriting: (_prompt: string) => void;
   getSettings: () => AnalysisSettings;
   resetSettings: () => void;
 }
 
-const defaultLocationSetting: LocationSetting = {
-  xPosition: DEFAULT_POSITION?.lat as number,
-  yPosition: DEFAULT_POSITION?.lng as number,
-};
+const defaultLocationSetting: LocationSetting = { roadnameAddress: '서울특별시 중구 세종대로 110' };
 
 export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   memberId: 0,
@@ -28,11 +23,10 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
 
   setMemberId: (memberId: number) => set({ memberId }),
 
-  setLocation: (position: MapLatLng) => {
-    const setting: LocationSetting =
-      !position || typeof position.lat !== 'number' || typeof position.lng !== 'number'
-        ? defaultLocationSetting
-        : { xPosition: position.lat, yPosition: position.lng };
+  setLocation: (address: string) => {
+    const setting: LocationSetting = !address
+      ? defaultLocationSetting
+      : { roadnameAddress: address };
 
     set({ locationSetting: setting });
   },

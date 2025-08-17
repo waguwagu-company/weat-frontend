@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { geocodeAddress } from '@/lib/api/location';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { geocodeAddress, autocompletePlace } from '@/lib/api/location';
 import { getRoadNameAddress } from '@/lib/utils';
 
 import type { MapLatLng } from '@/types/googlemaps';
@@ -15,5 +15,12 @@ export const useGeocoding = (position: MapLatLng) => {
     },
     enabled: false,
     staleTime: 0,
+  });
+};
+
+export const useAutocomplete = () => {
+  return useMutation({
+    mutationKey: ['autocompletePlace'],
+    mutationFn: autocompletePlace,
   });
 };

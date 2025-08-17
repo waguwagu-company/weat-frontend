@@ -1,19 +1,62 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { debounce } from 'lodash';
 import { Search, Crosshair } from 'lucide-react';
+import { useAutocomplete } from '@/hooks/useLocation';
+
+import type { ChangeEvent } from 'react';
 
 interface MapSearchProps {
   isCurrent: boolean;
   handleGPS: () => void;
 }
 
+interface PlaceSuggestion {
+  placeId: string;
+  title: string;
+  address: string;
+}
+
 export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [query, setQuery] = useState<string>('');
+  const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
+
+  const { mutate } = useAutocomplete();
+
+  const debouncedAutocomplete = useMemo(
+    () =>
+      debounce((input: string) => {
+        mutate(input, {
+          onSuccess: (data) => {
+            const results: PlaceSuggestion[] = data.map((item) => {
+              return {
+                placeId: item.placePrediction.placeId,
+                title: item.placePrediction.structuredFormat.mainText.text,
+                address: item.placePrediction.text.text,
+              };
+            });
+            setSuggestions(results);
+          },
+        });
+      }, 1000),
+    [mutate]
+  );
+
+  const enterQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    debouncedAutocomplete(e.target.value);
+    setQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    return () => {
+      debouncedAutocomplete.cancel();
+    };
+  }, [debouncedAutocomplete]);
 
   return (
-    <div className="absolute top-5 right-5 z-50 flex items-center space-x-2">
+    <div className="absolute top-5 right-5 z-10 flex items-center space-x-2">
       <div
         className={`
           flex items-center justify-end
@@ -29,7 +72,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
           type="text"
           id="addressSearch"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={enterQuery}
           placeholder="주소 검색"
           className={`
             flex-1 bg-transparent outline-none text-black placeholder-muted-dark
@@ -46,6 +89,29 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
           <Search size={20} />
         </button>
       </div>
+
+      {open && suggestions.length > 0 && (
+        <div
+          className="
+              absolute top-full left-0 w-77 mt-2 px-3 py-1.5 overflow-hidden z-9
+              border border-primary rounded-lg
+              bg-white/30 backdrop-blur-sm
+              shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]
+            "
+        >
+          <ul>
+            {suggestions.map((item) => (
+              <li
+                key={item.placeId}
+                className="px-3 py-1.5 border border-transparent not-last:border-b-muted-medium cursor-pointer"
+              >
+                <p className="font-semibold">{item.title}</p>
+                <p className="text-xs">{item.address}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <button
         type="button"

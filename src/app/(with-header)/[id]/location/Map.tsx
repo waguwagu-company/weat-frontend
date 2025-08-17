@@ -104,7 +104,7 @@ export default function Map() {
   };
 
   const savePosition = () => {
-    setLocation(markerPosition);
+    setLocation(geocodingData || '');
     router.push(`/${params.id}/like`);
   };
 

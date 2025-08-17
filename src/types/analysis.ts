@@ -5,8 +5,9 @@ import type { Category, Tag } from '@/types/category';
 export type AnalysisStatus = (typeof ANALYSIS_STATUS)[keyof typeof ANALYSIS_STATUS];
 
 export type LocationSetting = {
-  xPosition: number;
-  yPosition: number;
+  roadnameAddress: string;
+  xPosition?: number;
+  yPosition?: number;
 };
 
 export type CategorySetting = Pick<Category, 'categoryId'> &
