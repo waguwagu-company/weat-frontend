@@ -8,6 +8,7 @@ import { useGroupStore, useAnalysisStore } from '@/stores';
 import { useGeocoding } from '@/hooks/useLocation';
 import { DEFAULT_POSITION } from '@/constants/location';
 
+import MapSearch from './MapSearch';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import {
   AlertDialog,
@@ -21,10 +22,9 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import MapGPS from '@/assets/images/button-map-gps.svg';
 
 import type { CSSProperties } from 'react';
-import type { MapState, MapOptions, MapLatLng } from '@/types/googlemaps';
+import type { MapState, MapOptions, MapLatLng, MapMouseEvent } from '@/types/googlemaps';
 
 const mapContainerStyle: CSSProperties = {
   width: '100%',
@@ -49,6 +49,7 @@ export default function Map() {
   const mapRef = useRef<MapState>(null);
   const [currentPosition, setCurrentPosition] = useState<MapLatLng>(DEFAULT_POSITION);
   const [markerPosition, setMarkerPosition] = useState<MapLatLng>(DEFAULT_POSITION);
+  const [isCurrent, setIsCurrent] = useState<boolean>(false);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const {
@@ -83,6 +84,25 @@ export default function Map() {
     );
   };
 
+  const onMapClick = (e: MapMouseEvent) => {
+    const latLng: MapLatLng = e.latLng
+      ? { lat: e.latLng?.lat(), lng: e.latLng?.lng() }
+      : DEFAULT_POSITION;
+
+    setMarkerPosition(latLng);
+  };
+
+  const onMapCenterChanged = () => {
+    const center = mapRef.current?.getCenter();
+
+    if (center) {
+      const centerLatLng: MapLatLng = { lat: center.lat(), lng: center.lng() };
+      setIsCurrent(JSON.stringify(centerLatLng) === JSON.stringify(currentPosition));
+    } else {
+      setIsCurrent(false);
+    }
+  };
+
   const savePosition = () => {
     setLocation(markerPosition);
     router.push(`/${params.id}/like`);
@@ -112,24 +132,15 @@ export default function Map() {
         loadingElement={<LoadingSpinner />}
       >
         <>
-          <button
-            type="button"
-            className="absolute top-6 right-4 z-1 cursor-pointer hover:scale-110 transition ease-in-out duration-300"
-            onClick={getCurrent}
-          >
-            <MapGPS width="48" height="49" />
-          </button>
+          <MapSearch handleGPS={getCurrent} isCurrent={isCurrent} />
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
             center={currentPosition || DEFAULT_POSITION}
             zoom={defaultZoom}
             options={mapOptions}
             onLoad={onMapLoad}
-            onClick={(e) => {
-              setMarkerPosition(
-                !e.latLng ? DEFAULT_POSITION : { lat: e.latLng?.lat(), lng: e.latLng?.lng() }
-              );
-            }}
+            onClick={onMapClick}
+            onCenterChanged={onMapCenterChanged}
             onUnmount={onMapUnmount}
           >
             {markerPosition && (
