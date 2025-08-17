@@ -106,7 +106,7 @@ export default function MeetingPage() {
     <section className="h-full flex flex-col justify-end gap-[22vh]">
       <article>
         <h3
-          className={`font-cafe24-pro-up text-[128px] text-center ${analysisStatus?.submittedCount > 0 ? 'text-gradient' : 'text-muted-medium'}`}
+          className={`font-cafe24-pro-up text-[128px] text-center ${analysisStatus?.submittedCount > 0 ? 'text-gradient' : 'text-muted-200'}`}
         >
           {analysisStatus?.submittedCount}
         </h3>
@@ -153,7 +153,7 @@ export default function MeetingPage() {
                 : '나의 조건 알려주기'}
             </Button>
           </div>
-          <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>
+          <p className="text-xs text-muted-300 text-center pb-7">최대 9명까지 입력할 수 있어요.</p>
         </div>
 
         <AlertDialogContent>

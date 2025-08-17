@@ -23,11 +23,12 @@
   --color-border: var(--border);
   --color-bad: var(--bad);
   --color-good: var(--good);
-  --color-gradient-dark: var(--gradient-dark);
-  --color-gradient-light: var(--gradient-light);
-  --color-muted-dark: var(--muted-dark);
-  --color-muted-medium: var(--muted-medium);
-  --color-muted-light: var(--muted-light);
+  --color-gradient-2: var(--gradient-2);
+  --color-gradient-1: var(--gradient-1);
+  --color-muted-400: var(--muted-400);
+  --color-muted-300: var(--muted-300);
+  --color-muted-200: var(--muted-200);
+  --color-muted-100: var(--muted-100);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
@@ -54,11 +55,12 @@
   --primary-foreground: #ffffff;
   --secondary: #ffffff;
   --secondary-foreground: #000000;
-  --muted-light: #d9d9d9;
-  --muted-medium: #c2c2c2;
-  --muted-dark: #6e6e6e;
-  --gradient-light: linear-gradient(233.15deg, #e36969 0%, #2a92d7 100%);
-  --gradient-dark: linear-gradient(233.15deg, #ff0004 0%, #f4fb1f 100%);
+  --muted-100: #d9d9d9;
+  --muted-200: #c2c2c2;
+  --muted-300: #6e6e6e;
+  --muted-400: #464646;
+  --gradient-1: linear-gradient(233.15deg, #e36969 0%, #2a92d7 100%);
+  --gradient-2: linear-gradient(233.15deg, #ff0004 0%, #f4fb1f 100%);
   --good: #2859c4;
   --bad: #e94747;
   --border: oklch(0.92 0.004 286.32);
@@ -130,7 +132,7 @@ body {
   inset: 0;
   padding: 2px;
   border-radius: inherit;
-  background: var(--color-gradient-light);
+  background: var(--color-gradient-1);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -140,7 +142,7 @@ body {
 }
 
 .text-gradient {
-  background: var(--color-gradient-dark);
+  background: var(--color-gradient-2);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

@@ -75,7 +75,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
           onChange={enterQuery}
           placeholder="주소 검색"
           className={`
-            flex-1 bg-transparent outline-none text-black placeholder-muted-dark
+            flex-1 bg-transparent outline-none text-black placeholder-muted-300
             transition-opacity duration-300
             ${open ? 'opacity-100 ml-4 ' : 'opacity-0 pointer-events-none'}
           `}
@@ -103,7 +103,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
             {suggestions.map((item) => (
               <li
                 key={item.placeId}
-                className="px-3 py-1.5 border border-transparent not-last:border-b-muted-medium cursor-pointer"
+                className="px-3 py-1.5 text-muted-400 border border-transparent not-last:border-b-muted-200 cursor-pointer"
               >
                 <p className="font-semibold">{item.title}</p>
                 <p className="text-xs">{item.address}</p>
@@ -119,7 +119,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
             flex items-center justify-center w-11 h-11
             rounded-full bg-primary cursor-pointer
             shadow-[0_2px_4px_0_rgba(0,0,0,0.15)] hover:scale-105 transition ease-in-out duration-200
-            ${isCurrent ? 'text-white' : 'text-muted-light'}
+            ${isCurrent ? 'text-white' : 'text-muted-100'}
         `}
         onClick={handleGPS}
       >

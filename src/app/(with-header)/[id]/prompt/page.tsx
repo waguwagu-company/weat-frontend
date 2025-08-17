@@ -76,7 +76,7 @@ export default function PromptPage() {
           maxLength={100}
           value={prompt}
           onChange={enterPrompt}
-          className="w-full max-h-full resize-none break-words whitespace-pre-wrap font-paperlogy font-bold text-[32px] text-center text-foreground placeholder:text-muted-medium placeholder:underline placeholder:underline-offset-5 placeholder:decoration-2 outline-none"
+          className="w-full max-h-full resize-none break-words whitespace-pre-wrap font-paperlogy font-bold text-[32px] text-center text-foreground placeholder:text-muted-200 placeholder:underline placeholder:underline-offset-5 placeholder:decoration-2 outline-none"
         ></textarea>
       </article>
       <div className="flex flex-col items-center gap-5 pb-7">
@@ -90,7 +90,7 @@ export default function PromptPage() {
         </Button>
         <button
           type="button"
-          className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
+          className="text-sm text-muted-300 underline underline-offset-3 cursor-pointer"
           onClick={() => savePrompt(false)}
         >
           입력하지 않고 넘어갈래요.

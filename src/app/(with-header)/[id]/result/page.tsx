@@ -157,7 +157,7 @@ export default function ResultPage() {
         </Button>
         <button
           type="button"
-          className="text-sm text-muted-dark underline underline-offset-3 cursor-pointer"
+          className="text-sm text-muted-300 underline underline-offset-3 cursor-pointer"
           onClick={() => router.replace('/')}
         >
           다른 조건으로 찾아볼래요.

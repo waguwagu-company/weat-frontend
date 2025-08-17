@@ -9,7 +9,7 @@ const chipVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-muted-medium border-muted-medium',
+        default: 'text-muted-200 border-muted-200',
         good: 'text-good border-good',
         bad: 'text-bad border-bad',
       },
