@@ -130,10 +130,12 @@ export default function MeetingPage() {
                 variant={analysisStatus?.submittedCount === HEADCOUNT_MAX ? 'primary' : 'secondary'}
                 className="h-fit p-4"
                 onClick={
-                  analysisStatus?.isAnalysisStartConditionSatisfied ? confirmResult : copyLink
+                  analysisStatus?.isAnalysisStartConditionSatisfied && settingStatus?.isSubmitted
+                    ? confirmResult
+                    : copyLink
                 }
               >
-                {analysisStatus?.isAnalysisStartConditionSatisfied
+                {analysisStatus?.isAnalysisStartConditionSatisfied && settingStatus?.isSubmitted
                   ? '결과 조회하기'
                   : '그룹에 초대하기'}
               </Button>
@@ -146,7 +148,9 @@ export default function MeetingPage() {
               }
               onClick={enterLocation}
             >
-              {settingStatus?.isSubmitted ? '나의 조건을 이미 입력했어요.' : '나의 조건 알려주기'}
+              {settingStatus?.isSubmitted || analysisStatus?.submittedCount === HEADCOUNT_MAX
+                ? '나의 조건을 이미 입력했어요.'
+                : '나의 조건 알려주기'}
             </Button>
           </div>
           <p className="text-xs text-muted-dark text-center pb-7">최대 9명까지 입력할 수 있어요.</p>

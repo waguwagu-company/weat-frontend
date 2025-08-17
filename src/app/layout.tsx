@@ -25,7 +25,7 @@ const toastOptions = {
     width: 'fit-content',
     maxWidth: '100%',
     padding: '8px 20px',
-    background: 'var(--color-primary)',
+    background: 'black',
     color: 'white',
     border: 'none',
     boxShadow: '0px 4px 4px 0px #00000040',

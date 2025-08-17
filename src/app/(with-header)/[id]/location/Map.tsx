@@ -155,7 +155,7 @@ export default function Map() {
           <Button
             variant="primary"
             size="round"
-            className="absolute bottom-15 left-[calc(200px-36px)] z-1"
+            className={`absolute bottom-15 left-[calc(200px-36px)] z-1 ${openAlert ? 'opacity-0' : 'opacity-100'}`}
             onClick={() => refetchGeocoding()}
           >
             OK
