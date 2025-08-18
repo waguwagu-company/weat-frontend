@@ -2,8 +2,9 @@
 
 import { ReactNode, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { toast } from 'sonner';
-import { Share2, ChevronLeft } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 
 function ShareButton() {
   const [href, setHref] = useState<string>('');
@@ -36,33 +37,34 @@ function BackButton() {
   return (
     <button
       type="button"
-      className="absolute left-4 p-2 cursor-pointer"
+      className="absolute left-4 w-fit h-fit cursor-pointer"
       aria-label="뒤로 가기"
       onClick={() => router.back()}
     >
-      <ChevronLeft width={24} height={24} />
+      <Image src="/images/header-back.svg" alt="뒤로 가기" width={18} height={25} />
     </button>
   );
 }
 
 function Header() {
   const pathname = usePathname();
-
-  const isRoot = pathname === '/';
   const isMap = pathname.includes('/location');
-  const isLoading = pathname.includes('/loading');
-  const isResult = pathname.includes('/result');
 
-  if (isRoot || isLoading) return <></>;
-
-  const titleMap: Record<string, string> = {
-    create: '인원을 선택해 주세요.',
-    '': '내가 원하는 조건을 알려주세요.', // /[id]
+  const titleMap: Record<string, ReactNode> = {
+    create: '같이 갈 인원을 정해볼까요?',
+    '': '원하는 조건을 알려주세요.', // /[id]
     location: '위치를 선택해 주세요.',
-    like: '좋아하는 음식을 알려주세요.',
-    dislike: '싫어하는 음식을 알려주세요.',
+    like: (
+      <>
+        <span className="text-good">좋아</span>하는 음식을 알려주세요.
+      </>
+    ),
+    dislike: (
+      <>
+        <span className="text-bad">싫어</span>하는 음식을 알려주세요.
+      </>
+    ),
     prompt: '중요하게 생각하는 게 뭘까요?',
-    result: '음식점을 추천 드려요!',
   };
 
   const segments = pathname.split('/');
@@ -71,10 +73,12 @@ function Header() {
 
   return (
     <header
-      className={`sticky top-0 left-0 w-full h-13 bg-white ${isMap && 'shadow-lg'} z-1 flex items-center justify-center`}
+      className={`sticky top-0 left-0 w-full h-13 bg-white ${isMap && 'shadow-md'} z-1 flex items-center justify-center`}
     >
-      {isResult ? <ShareButton /> : <BackButton />}
-      <h1 className="w-2/3 text-center font-semibold text-xl">{title}</h1>
+      <BackButton />
+      <h1 className="max-w-3/4 text-center font-cafe24-pro-up text-2xl text-muted-400 leading-none">
+        {title}
+      </h1>
     </header>
   );
 }
