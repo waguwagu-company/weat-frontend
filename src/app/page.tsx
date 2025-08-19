@@ -70,9 +70,9 @@ export default function Home() {
                 <span className="font-cafe24-pro-up">WEAT</span>은 혼자 또는 함께 이용 가능해요.
               </h2>
               <p className="text-sm">
-                함께 결정하기로 했다면, 그룹을 만들고 친구들 초대하세요.
+                함께 결정하기로 했다면, 그룹을 만들고 친구를 초대하세요.
                 <br />
-                친구가 참여했는지 실시간으로 확인할 수 있어요.
+                친구들이 참여했는지 실시간으로 확인할 수 있어요.
               </p>
             </section>
             <Lottie animationData={onboarding1} loop autoplay className="px-15" />
@@ -110,8 +110,13 @@ export default function Home() {
         </CarouselContent>
       </Carousel>
 
-      <Button variant="primary" className="font-cafe24-pro-up text-2xl" asChild>
-        <Link href="/create">NEXT</Link>
+      <Button
+        variant="primary"
+        className="font-cafe24-pro-up text-2xl"
+        onClick={currentIndex === 4 ? undefined : () => navigateCarousel(currentIndex + 1)}
+        asChild={currentIndex === 4}
+      >
+        {currentIndex === 4 ? <Link href="/create">START</Link> : 'NEXT'}
       </Button>
     </main>
   );
