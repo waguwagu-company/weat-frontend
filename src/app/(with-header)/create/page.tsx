@@ -1,10 +1,9 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCreateGroup } from '@/hooks/useGroup';
 import { Button } from '@/components/ui/button';
-import IconGroup from '@/assets/images/icon-group.svg';
-import IconSolo from '@/assets/images/icon-solo.svg';
 
 export default function CreatePage() {
   const router = useRouter();
@@ -25,7 +24,7 @@ export default function CreatePage() {
       <Button variant="primary" className="h-1/2 flex flex-col gap-6" onClick={() => start(false)}>
         <div className="flex flex-col items-center gap-3">
           <span className="block font-cafe24-pro-up text-[32px]">WE EAT</span>
-          <IconGroup width="168" height="169" />
+          <Image src="./images/icon-group.svg" alt="WE EAT" width={168} height={169} />
         </div>
         여러 명이 같이 갈 가게를 찾아볼래요.
       </Button>
@@ -36,7 +35,7 @@ export default function CreatePage() {
       >
         <div className="flex flex-col items-center gap-3">
           <span className="block font-cafe24-pro-up text-[32px]">Just mine</span>
-          <IconSolo width="100" height="101" />
+          <Image src="./images/icon-solo.svg" alt="Just mine" width={100} height={101} />
         </div>
         혼자서 갈 가게를 찾아볼래요.
       </Button>
