@@ -55,14 +55,14 @@
   --popover-foreground: oklch(0.141 0.005 285.823);
   --primary: #fb5709;
   --primary-foreground: #ffffff;
-  --secondary: #ffffff;
+  --secondary: rgba(214, 50, 229, 0.92);
   --secondary-foreground: #000000;
   --muted-100: #d9d9d9;
   --muted-200: #c2c2c2;
   --muted-300: #6e6e6e;
   --muted-400: #464646;
-  --gradient-1: linear-gradient(233.15deg, #e36969 0%, #2a92d7 100%);
-  --gradient-2: linear-gradient(233.15deg, #ff0004 0%, #f4fb1f 100%);
+  --gradient-1: linear-gradient(233.15deg, #e36969 10%, #2a92d7 90%);
+  --gradient-2: linear-gradient(233.15deg, #ff0004 10%, #f4fb1f 90%);
   --gradient-2-from: #ff0004;
   --gradient-2-to: #f4fb1f;
   --good: #2859c4;
