@@ -64,7 +64,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
           border border-primary
           bg-white/30 backdrop-blur-sm
           shadow-[0_2px_4px_0_rgba(0,0,0,0.15),inset_0_3px_4px_0_rgba(0,0,0,0.25)]
-          rounded-full 
+          rounded-full z-10
           transition-all duration-300 overflow-hidden
           ${open ? 'w-77 h-11 gap-1' : 'w-11 h-11'}
         `}
@@ -94,7 +94,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
       {open && suggestions.length > 0 && (
         <div
           className="
-              absolute top-full left-0 w-77 mt-2 px-3 py-1.5 overflow-hidden z-9
+              absolute top-full left-0 w-77 -mt-8 px-3 py-1.5 overflow-hidden z-9
               border border-primary rounded-lg
               bg-white/30 backdrop-blur-sm
               shadow-[0_4px_4px_0_rgba(0,0,0,0.25)]
@@ -104,7 +104,9 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
             {suggestions.map((item) => (
               <li
                 key={item.placeId}
-                className="px-3 py-1.5 text-muted-400 border border-transparent not-last:border-b-muted-200 cursor-pointer"
+                className="
+                px-3 py-1.5 text-muted-400 border border-transparent
+                not-last:border-b-muted-200 first:pt-8 cursor-pointer"
               >
                 <p className="font-semibold">{item.title}</p>
                 <p className="text-xs">{item.address}</p>

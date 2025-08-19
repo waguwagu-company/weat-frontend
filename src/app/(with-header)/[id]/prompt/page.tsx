@@ -76,7 +76,11 @@ export default function PromptPage() {
           maxLength={100}
           value={prompt}
           onChange={enterPrompt}
-          className="w-full max-h-full resize-none break-words whitespace-pre-wrap font-paperlogy font-bold text-[32px] text-center text-foreground placeholder:text-muted-200 placeholder:underline placeholder:underline-offset-5 placeholder:decoration-2 outline-none"
+          className="
+            w-full max-h-full resize-none break-words whitespace-pre-wrap
+            font-paperlogy font-bold text-[32px] leading-13 text-center text-muted-400
+            placeholder:text-muted-200 placeholder:underline placeholder:underline-offset-5
+            placeholder:decoration-2 outline-none"
         ></textarea>
       </article>
       <div className="flex flex-col items-center gap-5 pb-7">

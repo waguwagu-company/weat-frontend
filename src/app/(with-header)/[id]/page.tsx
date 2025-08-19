@@ -103,8 +103,8 @@ export default function MeetingPage() {
   if (!isSuccessStatus) return <LoadingSpinner />;
 
   return (
-    <section className="h-full flex flex-col justify-end gap-[22vh]">
-      <article>
+    <section className="h-full flex flex-col justify-end items-center gap-[22vh]">
+      <article className="flex flex-col justify-between items-center">
         <h3
           className={`font-cafe24-pro-up text-[128px] text-center ${analysisStatus?.submittedCount > 0 ? 'text-gradient' : 'text-muted-200'}`}
         >
@@ -123,7 +123,7 @@ export default function MeetingPage() {
         </div>
       </article>
       <AlertDialog open={openAlert}>
-        <div>
+        <div className="w-full">
           <div className="flex flex-col gap-2 p-5">
             <AlertDialogTrigger asChild>
               <Button

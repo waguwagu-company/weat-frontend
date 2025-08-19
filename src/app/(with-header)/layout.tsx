@@ -76,7 +76,7 @@ function Header() {
       className={`sticky top-0 left-0 w-full h-13 bg-white ${isMap && 'shadow-md'} z-1 flex items-center justify-center`}
     >
       <BackButton />
-      <h1 className="max-w-3/4 text-center font-cafe24-pro-up text-2xl text-muted-400 leading-none">
+      <h1 className="text-center font-cafe24-pro-up text-2xl text-muted-400 leading-none">
         {title}
       </h1>
     </header>

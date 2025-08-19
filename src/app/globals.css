@@ -150,5 +150,18 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  display: inline-block;
+}
+
+p::-webkit-scrollbar {
+  width: 4px;
+}
+
+p::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 2px;
+}
+
+p::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
 }
