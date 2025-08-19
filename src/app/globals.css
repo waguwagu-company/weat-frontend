@@ -23,6 +23,8 @@
   --color-border: var(--border);
   --color-bad: var(--bad);
   --color-good: var(--good);
+  --color-gradient-2-to: var(--gradient-2-to);
+  --color-gradient-2-from: var(--gradient-2-from);
   --color-gradient-2: var(--gradient-2);
   --color-gradient-1: var(--gradient-1);
   --color-muted-400: var(--muted-400);
@@ -61,6 +63,8 @@
   --muted-400: #464646;
   --gradient-1: linear-gradient(233.15deg, #e36969 0%, #2a92d7 100%);
   --gradient-2: linear-gradient(233.15deg, #ff0004 0%, #f4fb1f 100%);
+  --gradient-2-from: #ff0004;
+  --gradient-2-to: #f4fb1f;
   --good: #2859c4;
   --bad: #e94747;
   --border: oklch(0.92 0.004 286.32);
@@ -143,6 +147,8 @@ body {
 
 .text-gradient {
   background: var(--color-gradient-2);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }

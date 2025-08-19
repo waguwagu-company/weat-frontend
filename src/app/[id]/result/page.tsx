@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { ThumbsUp } from 'lucide-react';
 import { useAnalysisStore } from '@/stores';
 import { useGetGroupResults } from '@/hooks/useGroup';
 import { useGetLikes, useToggleLike, useGetLikeStatus } from '@/hooks/useLikes';
@@ -14,48 +13,20 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import type { CarouselApi } from '@/components/ui/carousel';
 import type { PlaceResult } from '@/types/analysis';
 
-const mockData: PlaceResult[] = [
-  {
-    analysisResultDetailId: 0,
-    placeId: 0,
-    placeName: '위잇',
-    placeAddress: '서울 중구 세종대로 110',
-    analysisResultContent: '',
-    analysisBasisList: [
-      {
-        analysisBasisType: '',
-        analysisBasisContent: '위잇이 추천하는 식당이에요!',
-      },
-    ],
-    placeImageList: [
-      {
-        imageUrl: 'src/app/opengraph-image.png',
-      },
-    ],
-  },
-];
-
 export default function ResultPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const { memberId, setMemberId } = useAnalysisStore();
+
   const [api, setApi] = useState<CarouselApi>();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentResultId, setCurrentResultId] = useState<number>(0);
-  const { memberId, setMemberId } = useAnalysisStore();
+  const [showBasis, setShowBasis] = useState<boolean>(false);
 
   const { mutate, data, isPending, isSuccess } = useGetGroupResults();
   const { data: likeCount, refetch: refetchLikeCount } = useGetLikes(currentResultId);
   const { mutate: toggleLike } = useToggleLike(currentResultId);
   const { data: isLiked, refetch: refetchIsLiked } = useGetLikeStatus(currentResultId);
-
-  const getBasisTitle = (type: string) => {
-    switch (type) {
-      case 'REVIEW':
-        return '조건과 일치하는 리뷰';
-      default:
-        return '이런 식당은 어떠세요?';
-    }
-  };
 
   const likeResult = () => {
     toggleLike(void 0, {
@@ -64,6 +35,12 @@ export default function ResultPage() {
         refetchLikeCount();
       },
     });
+  };
+
+  const navigateCarousel = (index: number) => {
+    if (!api) return;
+
+    api.scrollTo(index);
   };
 
   useEffect(() => {
@@ -102,58 +79,56 @@ export default function ResultPage() {
 
   if (!data || isPending) return <LoadingSpinner />;
 
-  const results: PlaceResult[] = data?.groupResultDetailList || mockData;
+  const results: PlaceResult[] = data?.groupResultDetailList;
 
   return (
-    <section className="w-full h-full flex flex-col justify-between">
-      <div className="h-full py-2.5 flex flex-col justify-center items-center gap-5">
+    <main className="w-full h-full flex flex-col items-center bg-black">
+      <h1 className="w-fit py-3 font-cafe24-pro-up text-3xl bg-gradient-to-r from-gradient-2-from to-gradient-2-to bg-clip-text text-transparent">
+        WEAT&#39;s Pick
+      </h1>
+      <section className="w-full h-full flex flex-col justify-center items-center gap-5">
         <Carousel
           setApi={setApi}
           opts={{
             align: 'center',
           }}
-          className="w-full"
+          className="w-full h-fit"
         >
-          <CarouselContent className="ml-0 px-[70px] gap-8">
-            {results.map((detail, index) => (
+          <CarouselContent className="ml-0 px-[30px] gap-5">
+            {results.map((detail) => (
               <CarouselItem
-                key={detail.placeId}
-                className="w-fit min-w-fit pl-0 basis-[95%] shrink-0 last:pr-[70px]"
+                key={detail.analysisResultDetailId}
+                className="w-fit min-w-fit h-[70vh] pl-0 basis-[95%] shrink-0 last:pr-[30px]"
               >
                 <PlaceCard
-                  placeName={detail.placeName}
-                  placeAddress={detail.placeAddress}
-                  placeImageList={detail.placeImageList}
+                  place={detail}
                   likeCount={likeCount || 0}
-                  isCurrent={index === currentIndex}
+                  isLiked={isLiked === undefined ? false : isLiked}
+                  showBasis={showBasis}
                 />
               </CarouselItem>
             ))}
           </CarouselContent>
         </Carousel>
-        <article className="w-full max-h-full flex flex-col justify-start items-center gap-3 px-5 py-3">
-          <h3 className="font-semibold text-gradient text-xl">
-            {getBasisTitle(results[currentIndex]?.analysisBasisList[0].analysisBasisType)}
-          </h3>
-          <p className="line-clamp-4 overflow-hidden text-ellipsis break-words whitespace-pre-wrap font-paperlogy font-semibold text-[26px] text-center text-foreground">
-            {results[currentIndex]?.analysisBasisList[0].analysisBasisContent.replaceAll('\n', ' ')}
-          </p>
-        </article>
-      </div>
+
+        <div className="flex justify-center gap-2 pb-5">
+          {results.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`w-2 h-2 rounded-full transition-colors ${currentIndex === index ? 'bg-white' : 'bg-muted-300'}`}
+              onClick={() => navigateCarousel(index)}
+            />
+          ))}
+        </div>
+      </section>
       <div className="flex flex-col items-center gap-5 pb-7">
         <Button
-          variant="primary"
-          size="round"
-          className="flex-col text-xs font-normal"
-          onClick={likeResult}
+          variant="gradient"
+          className="w-fit h-fit px-5 py-2 rounded-full bg-black text-md"
+          onClick={() => setShowBasis(!showBasis)}
         >
-          <ThumbsUp
-            size={30}
-            fill={isLiked ? 'white' : 'transparent'}
-            strokeWidth={isLiked ? 0 : 2}
-            className="transition-all"
-          />
-          좋아요
+          이 식당을 추천하는 이유?
         </Button>
         <button
           type="button"
@@ -163,6 +138,6 @@ export default function ResultPage() {
           다른 조건으로 찾아볼래요.
         </button>
       </div>
-    </section>
+    </main>
   );
 }

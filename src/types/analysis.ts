@@ -20,21 +20,15 @@ export interface AnalysisSettings {
   textInputSetting: { inputText: string };
 }
 
-interface AnalysisBasis {
-  analysisBasisType: string;
-  analysisBasisContent: string;
-}
-
-interface PlaceImage {
-  imageUrl: string;
-}
-
 export interface PlaceResult {
   analysisResultDetailId: number;
   placeId: number;
   placeName: string;
   placeAddress: string;
-  analysisResultContent: string;
-  analysisBasisList: AnalysisBasis[];
-  placeImageList: PlaceImage[];
+  placeUrl: string;
+  keywordList: string[];
+  analysisBasisType: string;
+  analysisBasisContent: string;
+  analysisScore: number;
+  imageUrl: string;
 }
