@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import Image from 'next/image';
 import { debounce } from 'lodash';
 import { Search, Crosshair } from 'lucide-react';
 import { useAutocomplete } from '@/hooks/useLocation';
@@ -117,13 +118,17 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
         type="button"
         className={`
             flex items-center justify-center w-11 h-11
-            rounded-full bg-primary cursor-pointer
-            shadow-[0_2px_4px_0_rgba(0,0,0,0.15)] hover:scale-105 transition ease-in-out duration-200
-            ${isCurrent ? 'text-white' : 'text-muted-100'}
+            rounded-full text-white transition-all cursor-pointer
+            shadow-[0_2px_4px_0_rgba(0,0,0,0.15)]
+            ${isCurrent ? 'bg-white/30 backdrop-blur-sm border border-primary' : 'bg-primary'}
         `}
         onClick={handleGPS}
       >
-        <Crosshair size={20} />
+        {isCurrent ? (
+          <Image src="/images/icon-compass.svg" alt="GPS" width={18} height={17} />
+        ) : (
+          <Crosshair size={20} />
+        )}
       </button>
     </div>
   );

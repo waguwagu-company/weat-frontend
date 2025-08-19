@@ -49,7 +49,7 @@ export default function Map() {
   const mapRef = useRef<MapState>(null);
   const [currentPosition, setCurrentPosition] = useState<MapLatLng>(DEFAULT_POSITION);
   const [markerPosition, setMarkerPosition] = useState<MapLatLng>(DEFAULT_POSITION);
-  const [isCurrent, setIsCurrent] = useState<boolean>(false);
+  const [isCurrent, setIsCurrent] = useState<boolean>(true);
   const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   const {
