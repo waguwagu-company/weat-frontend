@@ -41,7 +41,7 @@ export default function Home() {
   }, [api]);
 
   return (
-    <main className="w-full h-full px-5 pt-7 pb-10 flex flex-col justify-between items-center bg-[linear-gradient(340.34deg,var(--primary)_10%,rgba(214,50,229,0.92)_90%)] text-white overflow-hidden">
+    <main className="w-full h-full px-5 pt-7 pb-5 flex flex-col justify-between items-center bg-[linear-gradient(340.34deg,var(--primary)_10%,rgba(214,50,229,0.92)_90%)] text-white overflow-hidden">
       <div className="w-full flex items-center gap-2 px-5 pb-4">
         <h1 className="font-semibold text-sm">How to use WEAT?</h1>
         <div className="flex justify-center gap-1">
@@ -64,7 +64,7 @@ export default function Home() {
         className="w-full h-full"
       >
         <CarouselContent className="ml-0">
-          <CarouselItem className="flex flex-col justify-between gap-5 pl-0">
+          <CarouselItem className="flex flex-col justify-between gap-4 pl-0">
             <section className="flex flex-col gap-2 px-5">
               <h2 className="font-extrabold text-xl">
                 <span className="font-cafe24-pro-up">WEAT</span>은 혼자 또는 함께 이용 가능해요.
@@ -77,28 +77,28 @@ export default function Home() {
             </section>
             <Lottie animationData={onboarding1} loop autoplay className="px-15" />
           </CarouselItem>
-          <CarouselItem className="flex flex-col justify-between gap-5 pl-0">
+          <CarouselItem className="flex flex-col justify-between gap-4 pl-0">
             <section className="flex flex-col gap-2 px-5">
               <h2 className="font-extrabold text-xl">원하는 위치를 알려주세요.</h2>
               <p className="text-sm">WEAT이 위치에 맞는 맛집을 추천해드려요.</p>
             </section>
             <Lottie animationData={onboarding2} loop autoplay className="px-15" />
           </CarouselItem>
-          <CarouselItem className="flex flex-col justify-between gap-5 pl-0">
+          <CarouselItem className="flex flex-col justify-between gap-4 pl-0">
             <section className="flex flex-col gap-2 px-5">
               <h2 className="font-extrabold text-xl">나의 음식 취향을 알려주세요.</h2>
               <p className="text-sm">좋아하는 음식과 싫어하는 음식을 선택해 주세요.</p>
             </section>
             <Lottie animationData={onboarding3} loop autoplay className="px-15" />
           </CarouselItem>
-          <CarouselItem className="flex flex-col justify-between gap-5 pl-0">
+          <CarouselItem className="flex flex-col justify-between gap-4 pl-0">
             <section className="flex flex-col gap-2 px-5">
               <h2 className="font-extrabold text-xl">내가 원하는 식당의 조건을 알려주세요.</h2>
               <p className="text-sm">Google 리뷰를 CLOVA AI가 분석해 딱 맞는 맛집을 찾아드려요!</p>
             </section>
             <Lottie animationData={onboarding4} loop autoplay className="px-15" />
           </CarouselItem>
-          <CarouselItem className="flex flex-col justify-between gap-5 pl-0">
+          <CarouselItem className="flex flex-col justify-between gap-4 pl-0">
             <section className="flex flex-col gap-2 px-5">
               <h2 className="font-extrabold text-xl">
                 <span className="font-cafe24-pro-up">WEAT</span>이 찾은 맛집들을 확인하세요!
@@ -110,14 +110,30 @@ export default function Home() {
         </CarouselContent>
       </Carousel>
 
-      <Button
-        variant="primary"
-        className="font-cafe24-pro-up text-2xl"
-        onClick={currentIndex === 4 ? undefined : () => navigateCarousel(currentIndex + 1)}
-        asChild={currentIndex === 4}
-      >
-        {currentIndex === 4 ? <Link href="/create">START</Link> : 'NEXT'}
-      </Button>
+      <div className="w-full flex flex-col items-center gap-2">
+        <Button
+          variant="primary"
+          className="font-cafe24-pro-up text-2xl"
+          onClick={currentIndex === 4 ? undefined : () => navigateCarousel(currentIndex + 1)}
+          asChild={currentIndex === 4}
+        >
+          {currentIndex === 4 ? <Link href="/create">START</Link> : 'NEXT'}
+        </Button>
+        <button
+          type="button"
+          className={currentIndex === 4 ? 'pointer-events-none' : 'cursor-pointer'}
+          onClick={() => navigateCarousel(4)}
+        >
+          <span
+            className={`
+              text-xs text-white underline underline-offset-3
+              ${currentIndex === 4 ? 'opacity-0' : 'opacity-100'}
+            `}
+          >
+            SKIP
+          </span>
+        </button>
+      </div>
     </main>
   );
 }
