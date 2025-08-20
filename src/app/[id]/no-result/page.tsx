@@ -6,7 +6,7 @@ import lottieNoResult from '@/assets/animations/lottie-no-result.json';
 
 export default function NoResultPage() {
   return (
-    <main className="relative w-full flex-1 flex flex-col justify-center items-center">
+    <main className="relative w-full flex-1 overflow-y-auto flex flex-col justify-center items-center">
       <h1 className="font-cafe24-pro-up text-primary text-2xl text-center mb-6">
         검색된 식당이 없어요...
       </h1>

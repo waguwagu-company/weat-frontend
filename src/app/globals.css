@@ -152,17 +152,20 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+main::-webkit-scrollbar,
 section::-webkit-scrollbar,
 p::-webkit-scrollbar {
   width: 4px;
 }
 
+main::-webkit-scrollbar-track,
 section::-webkit-scrollbar-track,
 p::-webkit-scrollbar-track {
   background: transparent;
   border-radius: 2px;
 }
 
+main::-webkit-scrollbar-thumb,
 section::-webkit-scrollbar-thumb,
 p::-webkit-scrollbar-thumb {
   background: rgba(128, 128, 128, 0.1);

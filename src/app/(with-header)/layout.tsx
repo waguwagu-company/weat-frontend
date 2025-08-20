@@ -61,7 +61,7 @@ export default function WithHeaderLayout({ children }: { children: ReactNode }) 
   return (
     <>
       <Header />
-      <main className="w-full flex-1">{children}</main>
+      <main className="w-full flex-1 overflow-y-auto">{children}</main>
     </>
   );
 }
