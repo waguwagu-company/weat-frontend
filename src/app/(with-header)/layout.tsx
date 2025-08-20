@@ -61,7 +61,7 @@ export default function WithHeaderLayout({ children }: { children: ReactNode }) 
   return (
     <>
       <Header />
-      <main className="w-full h-[calc(100vh-52px)]">{children}</main>
+      <main className="w-full flex-1">{children}</main>
     </>
   );
 }

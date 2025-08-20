@@ -82,7 +82,7 @@ export default function ResultPage() {
   const results: PlaceResult[] = data?.groupResultDetailList;
 
   return (
-    <main className="w-full h-full flex flex-col items-center bg-black">
+    <main className="w-full flex-1 flex flex-col items-center bg-black">
       <h1 className="w-fit py-3 font-cafe24-pro-up text-3xl bg-gradient-to-r from-gradient-2-from to-gradient-2-to bg-clip-text text-transparent">
         WEAT&#39;s Pick
       </h1>

@@ -41,7 +41,7 @@ export default function Home() {
   }, [api]);
 
   return (
-    <main className="w-full h-full px-5 pt-7 pb-5 flex flex-col justify-between items-center bg-[linear-gradient(340.34deg,var(--primary)_10%,rgba(214,50,229,0.92)_90%)] text-white overflow-hidden">
+    <main className="w-full flex-1 px-5 pt-7 pb-5 flex flex-col justify-between items-center bg-[linear-gradient(340.34deg,var(--primary)_10%,rgba(214,50,229,0.92)_90%)] text-white overflow-hidden">
       <div className="w-full flex items-center gap-2 px-5 pb-4">
         <h1 className="font-semibold text-sm">How to use WEAT?</h1>
         <div className="flex justify-center gap-1">

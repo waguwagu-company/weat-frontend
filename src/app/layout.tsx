@@ -39,7 +39,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         className={`${pretendard.variable} ${paperlogy.variable} ${cafe24proup.variable} font-pretendard antialiased`}
       >
         <Providers>
-          <div className="w-dvw max-w-[400px] h-dvh min-h-screen mx-auto bg-white shadow-md">
+          <div className="w-dvw max-w-[400px] h-dvh flex flex-col mx-auto bg-white shadow-md">
             <Toaster
               position="bottom-center"
               className="flex justify-center"
