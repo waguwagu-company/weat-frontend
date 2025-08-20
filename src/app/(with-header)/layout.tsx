@@ -1,35 +1,9 @@
 'use client';
 
-import { ReactNode, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { toast } from 'sonner';
-import { Share2 } from 'lucide-react';
 
-function ShareButton() {
-  const [href, setHref] = useState<string>('');
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(href);
-
-    toast('결과 링크가 클립보드에 복사됐어요.', { position: 'top-center' });
-  };
-
-  useEffect(() => {
-    setHref(window.location.href);
-  }, []);
-
-  return (
-    <button
-      type="button"
-      className="absolute right-4 text-primary p-2 cursor-pointer"
-      aria-label="공유하기"
-      onClick={copyLink}
-    >
-      <Share2 width={24} height={24} />
-    </button>
-  );
-}
+import type { ReactNode } from 'react';
 
 function BackButton() {
   const router = useRouter();

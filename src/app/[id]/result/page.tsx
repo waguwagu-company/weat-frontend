@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAnalysisStore } from '@/stores';
 import { useGetGroupResults } from '@/hooks/useGroup';
@@ -15,7 +15,6 @@ import type { CarouselApi } from '@/components/ui/carousel';
 import type { PlaceResult } from '@/types/analysis';
 
 export default function ResultPage() {
-  const router = useRouter();
   const params = useParams<{ id: string }>();
   const { memberId, setMemberId } = useAnalysisStore();
 
@@ -29,7 +28,7 @@ export default function ResultPage() {
   const { mutate: toggleLike } = useToggleLike(currentResultId);
   const { data: isLiked, refetch: refetchIsLiked } = useGetLikeStatus(currentResultId);
 
-  const likeResult = () => {
+  const likePlaceResult = () => {
     toggleLike(void 0, {
       onSuccess: () => {
         refetchIsLiked();
@@ -95,16 +94,21 @@ export default function ResultPage() {
           }}
           className="w-full h-fit"
         >
-          <CarouselContent className="ml-0 px-[30px] gap-5">
-            {results.map((detail) => (
+          <CarouselContent className="ml-0 px-[30px] gap-5 items-center">
+            {results.map((detail, index) => (
               <CarouselItem
                 key={detail.analysisResultDetailId}
-                className="w-fit min-w-fit h-[70vh] pl-0 basis-[95%] shrink-0 last:pr-[30px]"
+                className={`
+                  w-fit min-w-fit ${currentIndex === index ? 'h-[70vh]' : 'h-[65vh]'}
+                  pl-0 basis-[95%] shrink-0 transition-all last:pr-[30px]
+                `}
               >
                 <PlaceCard
                   place={detail}
                   likeCount={likeCount || 0}
                   isLiked={isLiked === undefined ? false : isLiked}
+                  toggleLike={likePlaceResult}
+                  isCurrent={currentIndex === index}
                   showBasis={showBasis}
                 />
               </CarouselItem>

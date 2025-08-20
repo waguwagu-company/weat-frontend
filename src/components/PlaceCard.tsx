@@ -1,17 +1,53 @@
 import Image from 'next/image';
 import { ThumbsUp } from 'lucide-react';
+import ShareButton from './ShareButton';
 import { BASIS_TYPE } from '@/constants/analysis';
 
+import type { CSSProperties } from 'react';
 import type { PlaceResult } from '@/types/analysis';
 
 interface PlaceCardProps {
   place: PlaceResult;
   likeCount: number;
   isLiked: boolean;
+  toggleLike: () => void;
+  isCurrent: boolean;
   showBasis: boolean;
 }
 
-export default function PlaceCard({ place, likeCount, isLiked, showBasis }: PlaceCardProps) {
+function LikeButton({
+  isLiked,
+  likeCount,
+  toggleLike,
+}: Pick<PlaceCardProps, 'isLiked' | 'likeCount' | 'toggleLike'>) {
+  return (
+    <div className="absolute bottom-32 right-3 flex items-center">
+      <button type="button" className="p-1 cursor-pointer" onClick={toggleLike}>
+        <ThumbsUp
+          size={20}
+          fill={isLiked ? 'var(--primary)' : 'white'}
+          strokeWidth={0}
+          className="transition-all drop-shadow-lg"
+        />
+      </button>
+      <span className="font-semibold text-lg">{likeCount}</span>
+    </div>
+  );
+}
+
+export default function PlaceCard({
+  place,
+  likeCount,
+  isLiked,
+  toggleLike,
+  isCurrent,
+  showBasis,
+}: PlaceCardProps) {
+  const shareToastStyle: CSSProperties = {
+    marginTop: '65px',
+    backgroundColor: 'var(--primary)',
+  };
+
   if (showBasis) {
     return (
       <article className="w-[340px] h-full pt-12 pb-5 px-5 flex flex-col justify-between items-center text-white border border-white/30 rounded-[8px] overflow-hidden">
@@ -43,17 +79,12 @@ export default function PlaceCard({ place, likeCount, isLiked, showBasis }: Plac
     <article className="relative w-[340px] h-full text-white border border-white/30 rounded-[8px] overflow-hidden">
       <img src={place.imageUrl} alt={place.placeName} className="w-full h-full object-cover" />
 
-      <div className="absolute bottom-32 right-3 flex items-center gap-1">
-        <button type="button" className="cursor-pointer">
-          <ThumbsUp
-            size={20}
-            fill={isLiked ? 'white' : 'transparent'}
-            strokeWidth={isLiked ? 0 : 1}
-            className="transition-all"
-          />
-        </button>
-        <span className="font-semibold text-lg">{likeCount}</span>
-      </div>
+      {isCurrent && (
+        <>
+          <ShareButton className="top-2 right-2 drop-shadow-lg" toastStyle={shareToastStyle} />
+          <LikeButton isLiked={isLiked} likeCount={likeCount} toggleLike={toggleLike} />
+        </>
+      )}
 
       <div className="absolute bottom-0 w-full px-5 py-4 flex flex-col justify-between gap-2 rounded-b-[8px] bg-black/20 backdrop-blur-sm">
         <p className="text-sm pb-1">
