@@ -46,8 +46,11 @@ export default function LoadingPage() {
   }, [isSuccessStatus, analysisStatus?.analysisStatus, params.id]);
 
   return (
-    <main className="w-full h-full flex justify-center items-center">
+    <main className="relative w-full h-full flex justify-center items-center">
       <Loading loopText={LOADING_TEXT} />
+      <span className="absolute bottom-7.5 inline-block w-full text-center text-sm text-muted-300 underline underline-offset-3">
+        결과 조회까지 평균 30초 정도의 시간이 소요됩니다.
+      </span>
     </main>
   );
 }
