@@ -124,7 +124,7 @@ export default function Map() {
       setOpenAlert(true);
 
       if (isSingle) {
-        toast('반경 1km 이내의 가게들만 검색돼요.', {
+        toast('반경 500m 이내의 가게들만 검색돼요.', {
           duration: 2000,
           style: { marginBottom: '230px' },
         });

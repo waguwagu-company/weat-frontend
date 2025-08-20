@@ -110,7 +110,7 @@ export default function Home() {
         </CarouselContent>
       </Carousel>
 
-      <div className="w-full flex flex-col items-center gap-2">
+      <div className="w-full flex flex-col items-center gap-3">
         <Button
           variant="primary"
           className="font-cafe24-pro-up text-2xl"
@@ -119,20 +119,15 @@ export default function Home() {
         >
           {currentIndex === 4 ? <Link href="/create">START</Link> : 'NEXT'}
         </Button>
-        <button
-          type="button"
-          className={currentIndex === 4 ? 'pointer-events-none' : 'cursor-pointer'}
-          onClick={() => navigateCarousel(4)}
-        >
-          <span
-            className={`
+        <Link
+          href="/create"
+          className={`
               text-xs text-white underline underline-offset-3
-              ${currentIndex === 4 ? 'opacity-0' : 'opacity-100'}
+              ${currentIndex === 4 ? 'opacity-0 pointer-events-none' : 'opacity-100'}
             `}
-          >
-            SKIP
-          </span>
-        </button>
+        >
+          SKIP
+        </Link>
       </div>
     </main>
   );
