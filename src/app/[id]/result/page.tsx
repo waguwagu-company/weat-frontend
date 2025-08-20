@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import Link from 'next/link';
 import { useAnalysisStore } from '@/stores';
 import { useGetGroupResults } from '@/hooks/useGroup';
 import { useGetLikes, useToggleLike, useGetLikeStatus } from '@/hooks/useLikes';
@@ -130,13 +131,9 @@ export default function ResultPage() {
         >
           이 식당을 추천하는 이유?
         </Button>
-        <button
-          type="button"
-          className="text-sm text-muted-300 underline underline-offset-3 cursor-pointer"
-          onClick={() => router.replace('/')}
-        >
-          다른 조건으로 찾아볼래요.
-        </button>
+        <Link href="/" className="text-sm text-muted-300 underline underline-offset-3">
+          다시 검색하기
+        </Link>
       </div>
     </main>
   );
