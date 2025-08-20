@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import { debounce } from 'lodash';
 import { Search, Crosshair } from 'lucide-react';
+import { useAnalysisStore } from '@/stores';
 import { useAutocomplete } from '@/hooks/useLocation';
 
 import type { ChangeEvent } from 'react';
@@ -24,6 +25,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
   const [query, setQuery] = useState<string>('');
   const [suggestions, setSuggestions] = useState<PlaceSuggestion[]>([]);
 
+  const { setLocation } = useAnalysisStore();
   const { mutate } = useAutocomplete();
 
   const debouncedAutocomplete = useMemo(
@@ -41,13 +43,18 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
             setSuggestions(results);
           },
         });
-      }, 1000),
+      }, 800),
     [mutate]
   );
 
   const enterQuery = (e: ChangeEvent<HTMLInputElement>) => {
     debouncedAutocomplete(e.target.value);
     setQuery(e.target.value);
+  };
+
+  const selectPlace = (address: string) => {
+    setLocation(address);
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -74,6 +81,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
           id="addressSearch"
           value={query}
           onChange={enterQuery}
+          autoFocus={open}
           placeholder="주소 검색"
           className={`
             flex-1 bg-transparent outline-none text-black placeholder-muted-300
@@ -107,6 +115,7 @@ export default function MapSearch({ isCurrent, handleGPS }: MapSearchProps) {
                 className="
                 px-3 py-1.5 text-muted-400 border border-transparent
                 not-last:border-b-muted-200 first:pt-8 cursor-pointer"
+                onClick={() => selectPlace(item.address)}
               >
                 <p className="font-semibold">{item.title}</p>
                 <p className="text-xs">{item.address}</p>

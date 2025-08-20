@@ -87,8 +87,8 @@ export default function MeetingPage() {
     } else {
       setOpenAlert(true);
       toast('친구가 아직 조건을 입력하고 있는지 확인해 주세요.', {
-        duration: 3000,
-        style: { marginBottom: '220px' },
+        duration: 2000,
+        style: { marginBottom: '230px' },
       });
     }
   };

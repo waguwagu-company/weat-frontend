@@ -44,7 +44,7 @@ export default function Map() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const { isSingle } = useGroupStore();
-  const { setLocation } = useAnalysisStore();
+  const { locationSetting, setLocation, resetLocation } = useAnalysisStore();
 
   const mapRef = useRef<MapState>(null);
   const [currentPosition, setCurrentPosition] = useState<MapLatLng>(DEFAULT_POSITION);
@@ -57,6 +57,8 @@ export default function Map() {
     isSuccess: isSuccessGeocoding,
     refetch: refetchGeocoding,
   } = useGeocoding(markerPosition);
+
+  const { roadnameAddress } = locationSetting;
 
   const onMapLoad = (map: MapState) => {
     mapRef.current = map;
@@ -103,8 +105,13 @@ export default function Map() {
     }
   };
 
+  const cancelSubmit = () => {
+    setOpenAlert(false);
+    resetLocation();
+  };
+
   const savePosition = () => {
-    setLocation(geocodingData || '');
+    if (!roadnameAddress) setLocation(geocodingData);
     router.push(`/${params.id}/like`);
   };
 
@@ -113,17 +120,17 @@ export default function Map() {
   }, []);
 
   useEffect(() => {
-    if (isSuccessGeocoding && geocodingData.length) {
+    if ((isSuccessGeocoding && geocodingData.length) || roadnameAddress.length) {
       setOpenAlert(true);
 
       if (isSingle) {
         toast('반경 1km 이내의 가게들만 검색돼요.', {
-          duration: 3000,
-          style: { marginBottom: '220px' },
+          duration: 2000,
+          style: { marginBottom: '230px' },
         });
       }
     }
-  }, [isSuccessGeocoding, geocodingData?.length]);
+  }, [isSuccessGeocoding, geocodingData?.length, roadnameAddress.length]);
 
   return (
     <>
@@ -168,11 +175,13 @@ export default function Map() {
               {isSingle ? '이 위치가 맞을까요?' : '나의 출발 위치'}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              {geocodingData || Object.values(markerPosition).join(', ')}
+              {roadnameAddress.length
+                ? roadnameAddress
+                : geocodingData || Object.values(markerPosition).join(', ')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setOpenAlert(false)}>취소</AlertDialogCancel>
+            <AlertDialogCancel onClick={cancelSubmit}>취소</AlertDialogCancel>
             <AlertDialogAction onClick={savePosition}>확인</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

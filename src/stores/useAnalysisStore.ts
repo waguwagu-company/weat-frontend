@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { DEFAULT_LOCATION, FALLBACK_LOCATION } from '@/constants/location';
 import { TAG_STATUS } from '@/constants/category';
 
 import type { AnalysisSettings, LocationSetting, CategorySetting } from '@/types/analysis';
@@ -6,30 +7,34 @@ import type { Category } from '@/types/category';
 
 interface AnalysisState extends AnalysisSettings {
   setMemberId: (_memberId: number) => void;
-  setLocation: (_address: string) => void;
+  setLocation: (_address: string | undefined) => void;
+  resetLocation: () => void;
   setPreference: (_categories: Category[]) => void;
   setFreewriting: (_prompt: string) => void;
   getSettings: () => AnalysisSettings;
   resetSettings: () => void;
 }
 
-const defaultLocationSetting: LocationSetting = { roadnameAddress: '서울특별시 중구 세종대로 110' };
-
 export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   memberId: 0,
-  locationSetting: defaultLocationSetting,
+  locationSetting: DEFAULT_LOCATION,
   categorySettingList: [],
   textInputSetting: { inputText: '' },
 
   setMemberId: (memberId: number) => set({ memberId }),
 
-  setLocation: (address: string) => {
-    const setting: LocationSetting = !address
-      ? defaultLocationSetting
-      : { roadnameAddress: address };
+  setLocation: (address: string | undefined) => {
+    const legacyAddress = get().locationSetting.roadnameAddress;
 
+    if (!address && !legacyAddress) {
+      set({ locationSetting: FALLBACK_LOCATION });
+    }
+
+    const setting: LocationSetting = { roadnameAddress: !address ? legacyAddress : address };
     set({ locationSetting: setting });
   },
+
+  resetLocation: () => set({ locationSetting: DEFAULT_LOCATION }),
 
   setPreference: (categories: Category[]) => {
     const settings: CategorySetting[] = categories.flatMap((category) =>
@@ -58,7 +63,7 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
   resetSettings: () =>
     set({
       memberId: 0,
-      locationSetting: defaultLocationSetting,
+      locationSetting: DEFAULT_LOCATION,
       categorySettingList: [],
       textInputSetting: { inputText: '' },
     }),
