@@ -1,5 +1,11 @@
 import { create } from 'zustand';
-import { TAG_STATUS, GOOD_MAX, BAD_MAX } from '@/constants/category';
+import {
+  updateTagGood,
+  updateTagBad,
+  countTagsByStatus,
+  countTagsByStatusPerCategory,
+} from '@/lib/category';
+import { TAG_STATUS } from '@/constants/category';
 
 import type { Category } from '@/types/category';
 
@@ -10,6 +16,8 @@ interface CategoryState {
   setTagBad: (_categoryId: number, _tagId: number) => void;
   getGoodTagCount: () => number;
   getBadTagCount: () => number;
+  getGoodTagCountPerCategory: () => Record<number, number>;
+  getBadTagCountPerCategory: () => Record<number, number>;
 }
 
 export const useCategoryStore = create<CategoryState>((set, get) => ({
@@ -19,80 +27,22 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
   setTagGood: (categoryId, tagId) => {
     const goodCount = get().getGoodTagCount();
 
-    set((state) => {
-      return {
-        categories: state.categories.map((category) => {
-          if (category.categoryId !== categoryId) return category;
-
-          return {
-            ...category,
-            tags: category.tags.map((tag) => {
-              if (tag.categoryTagId !== tagId) return tag;
-              if (tag.status === TAG_STATUS.BAD) return tag;
-
-              if (tag.status === TAG_STATUS.GOOD) {
-                return {
-                  ...tag,
-                  status: TAG_STATUS.DEFAULT,
-                };
-              }
-
-              if (goodCount >= GOOD_MAX) return tag;
-
-              return {
-                ...tag,
-                status: TAG_STATUS.GOOD,
-              };
-            }),
-          };
-        }),
-      };
-    });
-  },
-
-  getGoodTagCount: () => {
-    return get().categories.reduce((acc, category) => {
-      return acc + category.tags.filter((tag) => tag.status === TAG_STATUS.GOOD).length;
-    }, 0);
+    set((state) => ({
+      categories: updateTagGood(state.categories, categoryId, tagId, goodCount),
+    }));
   },
 
   setTagBad: (categoryId, tagId) => {
     const badCount = get().getBadTagCount();
 
-    set((state) => {
-      return {
-        categories: state.categories.map((category) => {
-          if (category.categoryId !== categoryId) return category;
-
-          return {
-            ...category,
-            tags: category.tags.map((tag) => {
-              if (tag.categoryTagId !== tagId) return tag;
-              if (tag.status === TAG_STATUS.GOOD) return tag;
-
-              if (tag.status === TAG_STATUS.BAD) {
-                return {
-                  ...tag,
-                  status: TAG_STATUS.DEFAULT,
-                };
-              }
-
-              if (badCount >= BAD_MAX) return tag;
-
-              return {
-                ...tag,
-                status: TAG_STATUS.BAD,
-              };
-            }),
-          };
-        }),
-      };
-    });
+    set((state) => ({
+      categories: updateTagBad(state.categories, categoryId, tagId, badCount),
+    }));
   },
 
-  getBadTagCount: () => {
-    return get().categories.reduce((acc, category) => {
-      return acc + category.tags.filter((tag) => tag.status === TAG_STATUS.BAD).length;
-    }, 0);
-  },
+  getGoodTagCount: () => countTagsByStatus(get().categories, TAG_STATUS.GOOD),
+  getBadTagCount: () => countTagsByStatus(get().categories, TAG_STATUS.BAD),
+
+  getGoodTagCountPerCategory: () => countTagsByStatusPerCategory(get().categories, TAG_STATUS.GOOD),
+  getBadTagCountPerCategory: () => countTagsByStatusPerCategory(get().categories, TAG_STATUS.BAD),
 }));

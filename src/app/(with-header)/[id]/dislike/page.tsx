@@ -3,14 +3,14 @@
 import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCategoryStore, useAnalysisStore } from '@/stores';
-import CategoryBox from '@/components/CategoryBox';
+import Category from '@/components/Category';
 import { Button } from '@/components/ui/button';
 import { TAG_STATUS, BAD_MAX } from '@/constants/category';
 
 export default function CategoryDislikePage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const { categories, setTagBad, getBadTagCount } = useCategoryStore();
+  const { categories, setCategories, getBadTagCount } = useCategoryStore();
   const { setPreference } = useAnalysisStore();
 
   const tagCount = getBadTagCount();
@@ -26,18 +26,12 @@ export default function CategoryDislikePage() {
 
   return (
     <div className="h-full flex flex-col justify-between">
-      <section className="w-full h-full px-5 mt-7 flex flex-col gap-6 overflow-y-auto scroll-smooth snap-y">
+      <section className="w-full h-full mt-7 flex flex-col gap-11 overflow-y-auto scroll-smooth snap-y">
         {categories.map((category) => (
-          <CategoryBox
-            key={category.categoryId}
-            title={category.title}
-            categoryId={category.categoryId}
-            tags={category.tags}
-            status={TAG_STATUS.GOOD}
-            handlerClick={setTagBad}
-          />
+          <Category key={category.categoryId} category={category} status={TAG_STATUS.BAD} />
         ))}
       </section>
+
       <div className="w-full h-fit px-5 py-7">
         <Button variant="primary" disabled={tagCount === 0} onClick={saveDislike}>
           {tagCount === 0

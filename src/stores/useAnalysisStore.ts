@@ -36,7 +36,6 @@ export const useAnalysisStore = create<AnalysisState>((set, get) => ({
       category.tags
         .filter((tag) => tag.status !== TAG_STATUS.DEFAULT)
         .map((tag) => ({
-          categoryId: category.categoryId,
           categoryTagId: tag.categoryTagId,
           isPreferred: tag.status === TAG_STATUS.GOOD,
         }))

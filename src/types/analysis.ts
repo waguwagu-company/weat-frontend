@@ -1,6 +1,6 @@
 import { ANALYSIS_STATUS } from '@/constants/analysis';
 
-import type { Category, Tag } from '@/types/category';
+import type { CategoryTag } from '@/types/category';
 
 export type AnalysisStatus = (typeof ANALYSIS_STATUS)[keyof typeof ANALYSIS_STATUS];
 
@@ -10,8 +10,7 @@ export type LocationSetting = {
   yPosition?: number;
 };
 
-export type CategorySetting = Pick<Category, 'categoryId'> &
-  Pick<Tag, 'categoryTagId'> & { isPreferred: boolean };
+export type CategorySetting = Pick<CategoryTag, 'categoryTagId'> & { isPreferred: boolean };
 
 export interface AnalysisSettings {
   memberId: number;

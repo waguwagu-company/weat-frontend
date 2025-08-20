@@ -1,15 +1,18 @@
 import { TAG_STATUS } from '@/constants/category';
 
-export interface Tag {
-  label: string;
+export type CategoryTagStatus = (typeof TAG_STATUS)[keyof typeof TAG_STATUS];
+
+export interface CategoryTag {
   categoryTagId: number;
   categoryTagOrder: number;
-  status: (typeof TAG_STATUS)[keyof typeof TAG_STATUS];
+  label: string;
+  status: CategoryTagStatus;
 }
 
 export interface Category {
   title: string;
   categoryId: number;
   categoryOrder: number;
-  tags: Tag[];
+  tags: CategoryTag[];
+  children: Category[];
 }
