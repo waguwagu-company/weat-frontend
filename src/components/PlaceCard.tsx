@@ -62,7 +62,7 @@ export default function PlaceCard({
         </div>
         <p className="text-md">
           <span className="font-bold text-primary">{place.keywordList.join(' ')}</span>
-          키워드를 고려한 맛집이에요!
+          &nbsp;키워드를 고려한 맛집이에요!
         </p>
         <div className="h-1/5 max-h-1/4">
           <h4 className="font-semibold text-center pb-2">
@@ -98,7 +98,10 @@ export default function PlaceCard({
         >
           {place.placeName}
         </h2>
-        <p className="text-sm overflow-hidden whitespace-nowrap text-ellipsis">
+        <p
+          title={place.placeAddress}
+          className="text-sm overflow-hidden whitespace-nowrap text-ellipsis"
+        >
           {place.placeAddress}
         </p>
       </div>
