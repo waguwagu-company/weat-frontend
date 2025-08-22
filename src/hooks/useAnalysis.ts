@@ -4,6 +4,7 @@ import {
   submitAnalysisSettings,
   getAnalysisStatus,
   getAnalysisSettingStatus,
+  validatePrompt,
 } from '@/lib/api/analysis';
 import { useAnalysisStore } from '@/stores';
 
@@ -47,5 +48,12 @@ export const useAnalysisSettingStatus = () => {
     enabled: memberId > 0,
     staleTime: 0,
     refetchOnMount: true,
+  });
+};
+
+export const useValidatePrompt = () => {
+  return useMutation({
+    mutationKey: ['validatePrompt'],
+    mutationFn: validatePrompt,
   });
 };

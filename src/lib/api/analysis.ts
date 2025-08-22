@@ -28,6 +28,11 @@ interface AnalysisSettingStatusResponse {
   isSubmitted: boolean;
 }
 
+interface ValidatePromptResponse {
+  message: string;
+  isValid: boolean;
+}
+
 /** 분석 시작 요청 */
 export const startAnalysis = async (groupId: string) => {
   const request = { groupId };
@@ -65,4 +70,15 @@ export const getAnalysisSettingStatus = async (memberId: number) => {
   );
 
   return response.data;
+};
+
+/** 비정형 조건 입력값 유효성 검사 */
+export const validatePrompt = async (prompt: string) => {
+  const request = { userInput: prompt };
+  const response = await axiosInstance.post<ApiResponse<ValidatePromptResponse>>(
+    `/api/analysis/validation/input`,
+    request
+  );
+
+  return response.data.data;
 };

@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { useGroupStore, useAnalysisStore } from '@/stores';
-import { useAnalysisSettings } from '@/hooks/useAnalysis';
+import { useValidatePrompt, useAnalysisSettings } from '@/hooks/useAnalysis';
 import { Button } from '@/components/ui/button';
 
 import type { ChangeEvent } from 'react';
@@ -14,19 +14,19 @@ export default function PromptPage() {
   const params = useParams<{ id: string }>();
   const { isSingle } = useGroupStore();
   const { setFreewriting, resetSettings } = useAnalysisStore();
+
+  const { mutate: validate, isPending: isPendingValidation } = useValidatePrompt();
   const { mutate: submitSettings } = useAnalysisSettings();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [prompt, setPrompt] = useState<string>('');
+  const [isInvalid, setIsInvalid] = useState<boolean>(false);
   const isEmpty = prompt.trim().length === 0;
-
-  const getButtonText = () => {
-    if (isEmpty) return '입력 중';
-    return 'OK';
-  };
 
   const enterPrompt = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const textarea = e.target;
+
+    if (isInvalid) setIsInvalid(false);
 
     if (textarea.value.length >= 100) {
       toast('공백을 포함해 100자까지만 입력할 수 있어요.', {
@@ -39,6 +39,28 @@ export default function PromptPage() {
     textarea.style.height = `${textarea.scrollHeight}px`;
 
     setPrompt(textarea.value);
+  };
+
+  const validatePrompt = () => {
+    validate(prompt.trim(), {
+      onSuccess: (response) => {
+        if (response.isValid) {
+          if (isInvalid) setIsInvalid(false);
+          savePrompt(true);
+        } else {
+          setIsInvalid(true);
+          toast(response.message, {
+            style: { marginBottom: '140px' },
+          });
+        }
+      },
+      onError: () => {
+        setIsInvalid(true);
+        toast('AI 서버 호출 중 오류가 발생했어요.', {
+          style: { marginBottom: '140px' },
+        });
+      },
+    });
   };
 
   const savePrompt = (isSaving: boolean) => {
@@ -85,12 +107,12 @@ export default function PromptPage() {
       </article>
       <div className="flex flex-col items-center gap-5 pb-7">
         <Button
-          variant={isEmpty ? 'gradient' : 'primary'}
+          variant={isEmpty || isPendingValidation || isInvalid ? 'gradient' : 'primary'}
           size="round"
-          className={isEmpty ? 'pointer-events-none' : ''}
-          onClick={() => savePrompt(true)}
+          className={isEmpty || isPendingValidation || isInvalid ? 'pointer-events-none' : ''}
+          onClick={validatePrompt}
         >
-          {getButtonText()}
+          {isEmpty ? '입력 중' : isPendingValidation || isInvalid ? '생각 중' : 'OK'}
         </Button>
         <button
           type="button"
